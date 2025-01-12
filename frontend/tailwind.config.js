@@ -5,6 +5,9 @@ export default {
     extend: {
       fontFamily: {
         italianno: ["Italianno", "cursive"],
+        lato: ["Lato", "sans-serif"],
+        montserrat: ["Montserrat", "sans-serif"],
+        playfair: ["Playfair Display", "serif"],
       },
     },
   },
