@@ -1,33 +1,3 @@
-// import React, { useContext } from "react";
-// import { IoIosAdd } from "react-icons/io";
-// import { ListContext } from "../App";
-
-// export default function Card() {
-//   const { trendingMovieList, trendingTvList, setLoading } =
-//     useContext(ListContext);
-//   if (!trendingMovieList) return <div>Loading</div>;
-//   return (
-//     <div>
-// <div className="card w-64 bg-base-300 rounded-md shadow-md">
-//   <figure className="p-6">
-//     <img
-//       src="https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg"
-//       alt="Pulp Fiction"
-//       className="w-full rounded-lg"
-//     />
-//   </figure>
-// </div>
-// <div className="card-body p-4">
-//   <div className="flex items-center gap-2">
-//     <h2 className="card-title text-base">Pulp Fiction</h2>
-//     <IoIosAdd className="w-5 h-7 cursor-pointer" />
-//   </div>
-//   <p className="text-sm opacity-70 -mt-2">Quentin Tarantino</p>
-// </div>
-//     </div>
-//   );
-// }
-
 import React, { useContext } from "react";
 import { IoIosAdd } from "react-icons/io";
 import { ListContext } from "../App";

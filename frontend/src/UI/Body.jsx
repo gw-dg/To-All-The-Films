@@ -29,7 +29,7 @@ export default function Body() {
             },
           }
         );
-        console.log(response.data);
+        // console.log(response.data);
         setTrendingMovieList(response.data);
       } catch (error) {
         console.error("Error:", error.message);
