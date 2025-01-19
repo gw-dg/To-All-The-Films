@@ -1,9 +1,43 @@
 import React, { useState } from "react";
 import "./index.css";
 import Body from "./UI/Body";
+import Card from "./UI/Card";
+import GenreCard from "./UI/GenreCard";
+import TitleCard from "./UI/TitlesCard";
+import Login from "./UI/Login";
+
+export const ListContext = React.createContext();
+
 function App() {
+  const [genreList, setGenreList] = useState([{ id: "", genreName: "" }]);
+  const [trendingMovieList, setTrendingMovieList] = useState({});
+  const [trendingTvList, setTrendingTvList] = useState({});
+  const [particularGenreMovieList, setParticularGenreMovieList] = useState({});
+  const [titleDetail, setTitleDetail] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [andOr, setAndOr] = useState("and");
+  const [selectedCards, setSelectedCards] = useState({ 80: true });
+
   return (
-    <>
+    <ListContext.Provider
+      value={{
+        genreList,
+        setGenreList,
+        trendingMovieList,
+        setTrendingMovieList,
+        trendingTvList,
+        setTrendingTvList,
+        particularGenreMovieList,
+        setParticularGenreMovieList,
+        titleDetail,
+        setTitleDetail,
+        loading,
+        setLoading,
+        andOr,
+        setAndOr,
+        selectedCards,
+        setSelectedCards,
+      }}>
       <div className="drawer">
         <input id="my-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">
@@ -34,6 +68,7 @@ function App() {
             </div>
           </div>
           <Body />
+          {/* <GenreCard /> */}
         </div>
         <div className="drawer-side">
           <label
@@ -60,7 +95,7 @@ function App() {
           </ul>
         </div>
       </div>
-    </>
+    </ListContext.Provider>
   );
 }
 

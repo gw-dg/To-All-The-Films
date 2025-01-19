@@ -1,12 +1,54 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import Avatar from "./Avatar";
+import { ListContext } from "../App";
+import axios from "axios";
+import Card from "./Card";
+import { IoIosAdd } from "react-icons/io";
+import GenreCard from "./GenreCard";
+import TabContent from "./TabContent";
+
 export default function Body() {
+  const {
+    trendingMovieList,
+    setTrendingMovieList,
+    trendingTvList,
+    setTrendingTvList,
+    setLoading,
+  } = useContext(ListContext);
+
+  useEffect(() => {
+    const fetchTrendingMovies = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/api/trending/movie`,
+          {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.data);
+        setTrendingMovieList(response.data);
+      } catch (error) {
+        console.error("Error:", error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTrendingMovies();
+
+    return () => setTrendingMovieList(null);
+  }, [setLoading, setTrendingMovieList]);
   return (
     // Main container - min-height for larger screens, flex-grow for responsiveness
     <div className="min-h-screen relative flex md:flex-row">
       {/* Left panel - grows to fill available space, maintains minimum height on mobile */}
-      <div className="flex-1 min-h-[500px] md:h-auto bg-base-200 p-4 flex flex-col justify-start">
-        <span className="text-center mt-5 mb-5 font-montserrat">Explore</span>
+      <div className="flex-1 min-h-[500px] md:h-auto bg-base-200 p-4 flex flex-col">
+        <span className="text-center text-xl font-montserrat mb-6">
+          Discover
+        </span>
 
         <div className="max-w-xs mx-auto w-full">
           <label className="input input-bordered flex items-center gap-2">
@@ -30,8 +72,8 @@ export default function Body() {
         </div>
 
         <div className="mt-5 flex flex-col">
-          <span className="text-left pl-4 font-montserrat">Trending</span>
-          <div className="carousel carousel-center rounded-box max-w space-x-4 p-4">
+          {/* <span className="text-left pl-4 font-montserrat">Trending</span> */}
+          {/* <div className="carousel carousel-center rounded-box max-w space-x-4 p-4">
             {[
               "photo-1559703248-dcaaec9fab78",
               "photo-1565098772267-60af42b81ef2",
@@ -40,23 +82,29 @@ export default function Body() {
               "photo-1550258987-190a2d41a8ba",
               "photo-1559181567-c3190ca9959b",
               "photo-1601004890684-d8cbf643f5f2",
+              "photo-1601004890684-d8cbf643f5f2",
+              "photo-1601004890684-d8cbf643f5f2",
+              "photo-1601004890684-d8cbf643f5f2",
             ].map((photo, index) => (
-              <div key={index} className="carousel-item">
+              <div key={index} className="carousel-item flex flex-col">
                 <img
                   src={`https://img.daisyui.com/images/stock/${photo}.webp`}
                   className="rounded-box h-40 w-64 object-cover" // Added fixed dimensions and object-cover
                   alt={`Carousel image ${index + 1}`}
                 />
+                <p>yes</p>
               </div>
             ))}
-          </div>
+          </div> */}
+
+          <Card />
         </div>
         {/* Second carousel */}
-        <div className="mt-7 flex flex-col">
-          <span className="text-left pl-4 font-montserrat">
+        <div className="flex flex-col">
+          {/* <span className="text-left pl-4 font-montserrat">
             Curated Titles For You
-          </span>
-          <div className="carousel carousel-center rounded-box max-w space-x-4 p-4">
+          </span> */}
+          {/* <div className="-mt-6 carousel carousel-center rounded-box max-w space-x-4 p-4">
             {[
               "photo-1559703248-dcaaec9fab78",
               "photo-1565098772267-60af42b81ef2",
@@ -65,16 +113,20 @@ export default function Body() {
               "photo-1550258987-190a2d41a8ba",
               "photo-1559181567-c3190ca9959b",
               "photo-1601004890684-d8cbf643f5f2",
+              "photo-1601004890684-d8cbf643f5f2",
+              "photo-1601004890684-d8cbf643f5f2",
+              "photo-1601004890684-d8cbf643f5f2",
             ].map((photo, index) => (
-              <div key={index} className="carousel-item">
+              <div key={index} className="carousel-item flex flex-col">
                 <img
                   src={`https://img.daisyui.com/images/stock/${photo}.webp`}
                   className="rounded-box h-40 w-64 object-cover" // Added fixed dimensions and object-cover
                   alt={`Carousel image ${index + 1}`}
                 />
+                <p>yes</p>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="mt-7 absolute left-1/2 transform -translate-x-1/2 z-40">
@@ -88,31 +140,41 @@ export default function Body() {
         </span>
 
         {/* Centered tabs */}
-        <div className="flex flex-col items-center">
+        {/* <div className="flex flex-col items-center">
           <div role="tablist" className="tabs tabs-bordered">
             <input
               type="radio"
               name="my_tabs_1"
               role="tab"
-              className="tab tab-lg"
+              className="tab tab-lg flex-1 whitespace-nowrap"
               aria-label="Based on your taste"
             />
-            <div role="tabpanel" className="tab-content">
-              Tab content 1
+            <div role="tabpanel" className="tab-content p-4">
+              <p>Content for "Based on your taste" goes here.</p>
             </div>
+
             <input
               type="radio"
               name="my_tabs_1"
               role="tab"
-              className="tab tab-lg"
+              className="tab tab-lg flex-1 whitespace-nowrap"
               aria-label="Based on your mood"
               defaultChecked
             />
-            <div role="tabpanel" className="tab-content"></div>
+            <div role="tabpanel" className="tab-content p-4">
+              <p className="text-center mb-4">
+                What would you like to watch today?
+              </p>
+              <GenreCard />
+            </div>
           </div>
 
           {/* Tab content container */}
-          <div className="w-full mt-6">{/* First tab content */}</div>
+        {/* <div className="w-full mt-6">yes</div> }
+        </div> */}
+        {/* Centered tabs */}
+        <div className="flex flex-col items-center">
+          <TabContent />
         </div>
       </div>
     </div>
