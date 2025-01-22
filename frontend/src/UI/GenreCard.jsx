@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import genreMap from "../utils/GenreName";
-import { ListContext } from "../App";
+import { MiscContext } from "../App";
 
 export default function Card() {
-  const { selectedCards, setSelectedCards } = useContext(ListContext);
+  const { selectedCards, setSelectedCards } = useContext(MiscContext);
 
   const toggleSelected = (id) => {
     const selectedCount = Object.values(selectedCards).filter(Boolean).length;
@@ -36,11 +36,11 @@ export default function Card() {
             />
             <div className="absolute inset-0 rounded-lg flex items-center justify-center gap-2">
               {selectedCards[genre.id] && (
-                <div className="text-base-200">
+                <div className="text-neutral-content">
                   <FaCheckCircle className="w-5 h-5" />
                 </div>
               )}
-              <span className="text-base-200 font-bold text-xl">
+              <span className="text-neutral-content font-bold text-xl">
                 {genre.name}
               </span>
             </div>

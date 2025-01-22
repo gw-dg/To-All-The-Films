@@ -36,14 +36,15 @@ const moviesWatchedSchema = new mongoose.Schema({
 });
 
 const userSchema = new mongoose.Schema({
-  username: {
+  firebaseUID: {
     type: String,
     required: true,
     unique: true,
   },
-  password: {
+  username: {
     type: String,
     required: true,
+    unique: true,
   },
   email: {
     type: String,

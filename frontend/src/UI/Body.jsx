@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import Avatar from "./Avatar";
-import { ListContext } from "../App";
+import { ListContext, AuthContext } from "../App";
 import axios from "axios";
 import Card from "./Card";
 import { IoIosAdd } from "react-icons/io";
@@ -13,10 +13,13 @@ export default function Body() {
     setTrendingMovieList,
     trendingTvList,
     setTrendingTvList,
-    setLoading,
   } = useContext(ListContext);
 
+  const { setLoading } = useContext(AuthContext);
+
   useEffect(() => {
+    if (trendingMovieList?.results) return;
+
     const fetchTrendingMovies = async () => {
       setLoading(true);
       try {
@@ -39,7 +42,7 @@ export default function Body() {
     };
     fetchTrendingMovies();
 
-    return () => setTrendingMovieList(null);
+    // return () => setTrendingMovieList(null);
   }, [setLoading, setTrendingMovieList]);
   return (
     // Main container - min-height for larger screens, flex-grow for responsiveness

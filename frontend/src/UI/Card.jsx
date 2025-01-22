@@ -1,11 +1,10 @@
 import React, { useContext } from "react";
 import { IoIosAdd } from "react-icons/io";
-import { ListContext } from "../App";
+import { ListContext, AuthContext } from "../App";
 
 export default function Card() {
-  const { trendingMovieList, trendingTvList, setLoading } =
-    useContext(ListContext);
-
+  const { trendingMovieList, trendingTvList } = useContext(ListContext);
+  const { setLoading } = useContext(AuthContext);
   if (!trendingMovieList?.results) return <div>Loading</div>;
 
   return (

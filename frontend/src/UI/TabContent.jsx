@@ -1,11 +1,11 @@
 import React, { useState, useContext } from "react";
 import GenreCard from "./GenreCard";
 import TitleCard from "./TitlesCard";
-import { ListContext } from "../App";
+import { MiscContext } from "../App";
 
 const TabContent = () => {
   const [activeTab, setActiveTab] = useState("mood");
-  const { setAndOr, andOr } = useContext(ListContext);
+  const { andOr, setAndOr } = useContext(MiscContext);
 
   const handleToggle = (e) => {
     if (e.target.checked) setAndOr("or");
@@ -27,9 +27,9 @@ const TabContent = () => {
         </button>
         <button
           onClick={() => setActiveTab("mood")}
-          className={`flex-1 pb-2 text-base uppercase tracking-wide font-medium border-b transition-colors ${
+          className={`flex-1 pb-2 text-base uppercase tracking-wide font-medium transition-colors ${
             activeTab === "mood"
-              ? "border-primary text-base-content"
+              ? "border-b border-primary text-base-content"
               : "text-base-content/50"
           }`}>
           Based on my mood

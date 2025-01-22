@@ -1,18 +1,16 @@
 import React, { useContext, useEffect } from "react";
 import axios from "axios";
 import { IoIosAdd } from "react-icons/io";
-import { ListContext } from "../App";
+import { ListContext, AuthContext, MiscContext } from "../App";
 
 export default function TitleCard() {
-  const {
-    andOr,
-    selectedCards,
-    setLoading,
-    particularGenreMovieList,
-    setParticularGenreMovieList,
-  } = useContext(ListContext);
-
+  const { particularGenreMovieList, setParticularGenreMovieList } =
+    useContext(ListContext);
+  const { setLoading } = useContext(AuthContext);
+  const { andOr, selectedCards } = useContext(MiscContext);
   useEffect(() => {
+    if (particularGenreMovieList?.results) return;
+
     const fetchTitles = async () => {
       setLoading(true);
       try {

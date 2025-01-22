@@ -1,7 +1,20 @@
 import React from "react";
 import Body from "../UI/Body";
+import { useNavigate } from "react-router-dom";
+import { SlHome, SlSettings } from "react-icons/sl";
+import { CgLogIn } from "react-icons/cg";
+import { GoTrophy } from "react-icons/go";
+import { IoSettingsOutline } from "react-icons/io5";
+import { LuUser } from "react-icons/lu";
+import ThemeController from "./ThemeController";
 
 export default function Homepage() {
+  const navigate = useNavigate();
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
   return (
     <>
       <div className="drawer">
@@ -44,23 +57,48 @@ export default function Homepage() {
           <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
             {/* Sidebar content here */}
             <li>
-              <a>Home</a>
+              <button
+                className="text-base-content"
+                onClick={() => handleNavigation("/home")}>
+                <SlHome className="w-5 h-5" />
+                <a>Home</a>
+              </button>
             </li>
             <li>
-              <a>Credits</a>
+              <button
+                className="text-base-content"
+                onClick={() => handleNavigation("/profile/:id")}>
+                <LuUser className="w-5 h-5" />
+                <a>Profile</a>
+              </button>
             </li>
             <li>
-              <a>Preferences</a>
+              <button
+                className="text-base-content"
+                onClick={() => handleNavigation("/credits")}>
+                <GoTrophy className="w-5 h-5" />
+                <a>Credits</a>
+              </button>
             </li>
             <li>
-              <a>Profile</a>
+              <button
+                className="text-base-content"
+                onClick={() => handleNavigation("/preferences")}>
+                <SlSettings className="w-5 h-5" />
+                <a>Preferences</a>
+              </button>
             </li>
             <li>
-              <a>Select Theme</a>
+              <button
+                className="text-base-content"
+                onClick={() => handleNavigation("/login")}>
+                <CgLogIn className="w-5 h-5" />
+                <a>Login</a>
+              </button>
             </li>
-            <li>
-              <a>Login</a>
-            </li>
+            <li className="mt-auto"></li>
+            {/* <p className="ml-8">Select Theme</p> */}
+            <ThemeController />
           </ul>
         </div>
       </div>
