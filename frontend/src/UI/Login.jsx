@@ -1,4 +1,14 @@
 import React, { useState, useContext } from "react";
+import { auth } from "../firebaseConfig";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  setPersistence,
+  browserSessionPersistence,
+  inMemoryPersistence,
+} from "firebase/auth";
+
 import axios from "axios";
 import {
   MdEmail,
@@ -54,31 +64,39 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-
-    if (!loginData.email || !loginData.password) {
-      setError("Please fill in all fields.");
-      return;
-    }
-
     setLoading(true);
+
     try {
+      const auth = getAuth();
+      await setPersistence(auth, inMemoryPersistence);
+
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        loginData.email,
+        loginData.password
+      );
+
+      const idToken = await userCredential.user.getIdToken();
+
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/login`,
-        loginData,
+        { idToken },
         {
-          headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
 
+      // console.log("Backend response:", response.data);
+
       if (response.data.message === "Login successful") {
-        console.log("Setting isLoggedIn to true");
+        // to avoid persisting authentication state on the client side
+        await auth.signOut();
         setIsLoggedIn(true);
         navigate("/home");
       }
     } catch (err) {
-      console.error("Login failed", err);
-      setError(err.response?.data?.message || "Invalid email or password");
+      console.error("Login error:", err);
+      setError(err.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -110,28 +128,38 @@ const Login = () => {
 
     setLoading(true);
     try {
+      // First create user in Firebase
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        registerData.email,
+        registerData.password
+      );
+
+      // Get the ID token
+      const idToken = await userCredential.user.getIdToken();
+
+      // Register with your backend
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/register`,
         {
+          idToken,
           username: registerData.username,
-          email: registerData.email,
-          password: registerData.password,
         },
         {
-          headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
 
       if (response.data.message === "User registered successfully") {
+        // Sign out from client side since we're using server session
+        await auth.signOut();
         setIsLoggedIn(true);
         navigate("/home");
       }
     } catch (err) {
-      console.error("Registration failed", err);
-      setError(
-        err.response?.data?.message || "Registration failed. Please try again."
-      );
+      console.error("Registration error:", err);
+      setError(err.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
     }

@@ -6,39 +6,32 @@ require("dotenv").config();
 const router = express.Router();
 
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  const { idToken } = req.body;
+
+  if (!idToken) {
+    return res.status(400).json({ message: "ID Token is required" });
+  }
 
   try {
-    const signInResult = await axios.post(
-      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.FIREBASE_API_KEY}`,
-      {
-        email,
-        password,
-        returnSecureToken: true,
-      }
-    );
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
 
-    const firebaseUID = signInResult.data.localId;
+    const firebaseUID = decodedToken.uid;
 
     const mongoUser = await User.findOne({ firebaseUID });
-
     if (!mongoUser) {
       return res.status(404).json({ message: "User not found in database" });
     }
 
-    const idToken = signInResult.data.idToken;
-    const expiresIn = 60 * 60 * 24 * 10 * 1000;
-
-    const sessionCookie = await admin
-      .auth()
-      .createSessionCookie(idToken, { expiresIn });
+    const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
+    const sessionCookie = await admin.auth().createSessionCookie(idToken, {
+      expiresIn,
+    });
 
     res.cookie("session", sessionCookie, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Only use secure in production
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-
       maxAge: expiresIn,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     });
 
     res.json({
@@ -46,28 +39,32 @@ router.post("/login", async (req, res) => {
       user: {
         username: mongoUser.username,
         email: mongoUser.email,
-        id: mongoUser._id,
       },
     });
-  } catch (err) {
-    console.error("Login error:", err);
-    res.status(400).json({
-      message: "Login failed",
-      error: err.message,
+  } catch (error) {
+    console.error("Session creation failed:", error);
+    res.status(401).json({
+      message: "Session creation failed",
+      error: error.message,
     });
   }
 });
 
 router.post("/register", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { idToken, username } = req.body;
+
+  if (!idToken || !username) {
+    return res
+      .status(400)
+      .json({ message: "ID Token and username are required" });
+  }
 
   try {
-    if (!username || !email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    const firebaseUID = decodedToken.uid;
 
     const existingUser = await User.findOne({
-      $or: [{ username }, { email }],
+      $or: [{ firebaseUID }, { username }, { email: decodedToken.email }],
     });
 
     if (existingUser) {
@@ -75,43 +72,35 @@ router.post("/register", async (req, res) => {
         message:
           existingUser.username === username
             ? "Username already exists"
-            : "Email already exists",
+            : "User already exists",
       });
     }
 
-    const firebaseUser = await admin.auth().createUser({
-      email,
-      password,
-      displayName: username,
-    });
-
     const newUser = new User({
-      firebaseUID: firebaseUser.uid,
-      email: firebaseUser.email,
-      username: username,
+      firebaseUID,
+      email: decodedToken.email,
+      username,
     });
 
     await newUser.save();
 
-    const idToken = await admin.auth().createCustomToken(firebaseUser.uid);
-    const expiresIn = 60 * 60 * 24 * 10 * 1000;
-    const sessionCookie = await admin
-      .auth()
-      .createSessionCookie(idToken, { expiresIn });
+    const expiresIn = 60 * 60 * 24 * 5 * 1000;
+    const sessionCookie = await admin.auth().createSessionCookie(idToken, {
+      expiresIn,
+    });
 
     res.cookie("session", sessionCookie, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Only use secure in production
-      sameSite: "none",
-
       maxAge: expiresIn,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     });
 
     res.status(201).json({
       message: "User registered successfully",
       user: {
-        username: username,
-        email: firebaseUser.email,
+        username: newUser.username,
+        email: newUser.email,
         id: newUser._id,
       },
     });
@@ -139,41 +128,45 @@ router.post("/login/auth", async (req, res) => {
     if (!user) {
       const firebaseUser = await admin.auth().getUser(decodedToken.uid);
 
+      // unique username if user not found
+      const username =
+        firebaseUser.displayName ||
+        `user${Math.random().toString(36).substr(2, 9)}`;
+
       user = new User({
         firebaseUID: decodedToken.uid,
         email: firebaseUser.email,
-        username: firebaseUser.displayName,
+        username: username,
       });
 
       await user.save();
     }
 
-    const expiresIn = 60 * 60 * 24 * 10 * 1000;
-    const sessionCookie = await admin
-      .auth()
-      .createSessionCookie(idToken, { expiresIn });
+    const expiresIn = 60 * 60 * 24 * 5 * 1000;
+    const sessionCookie = await admin.auth().createSessionCookie(idToken, {
+      expiresIn,
+    });
 
     res.cookie("session", sessionCookie, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Only use secure in production
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-
       maxAge: expiresIn,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     });
 
     res.json({
-      message: "User logged in successfully",
+      message: "Login successful",
       user: {
         username: user.username,
         email: user.email,
         id: user._id,
       },
     });
-  } catch (err) {
-    console.error("OAuth login error:", err);
-    res.status(400).json({
-      message: "Error authenticating user",
-      error: err.message,
+  } catch (error) {
+    console.error("OAuth login error:", error);
+    res.status(401).json({
+      message: "Authentication failed",
+      error: error.message,
     });
   }
 });
@@ -182,29 +175,25 @@ router.get("/session/validate", async (req, res) => {
   const sessionCookie = req.cookies.session;
 
   if (!sessionCookie) {
-    return res
-      .status(401)
-      .json({ isLoggedIn: false, message: "No session found" });
+    return res.status(401).json({ isLoggedIn: false, message: "No session" });
   }
 
   try {
     const decodedClaims = await admin
       .auth()
       .verifySessionCookie(sessionCookie, true);
-    return res.status(200).json({ isLoggedIn: true, user: decodedClaims });
+    res.status(200).json({ isLoggedIn: true, user: decodedClaims });
   } catch (error) {
-    console.error("Session validation failed:", error);
-    return res
-      .status(401)
-      .json({ isLoggedIn: false, message: "Invalid or expired session" });
+    res.status(401).json({ isLoggedIn: false, message: "Invalid session" });
   }
 });
 
 router.post("/logout", (req, res) => {
+  console.log("logout initiated");
   res.clearCookie("session", {
     httpOnly: true,
-    secure: true,
-    sameSite: "none",
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   });
   res.json({ message: "Logged out successfully" });
 });

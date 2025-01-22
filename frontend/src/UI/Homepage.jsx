@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import Body from "../UI/Body";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { SlHome, SlSettings } from "react-icons/sl";
 import { CgLogIn } from "react-icons/cg";
@@ -7,12 +8,37 @@ import { GoTrophy } from "react-icons/go";
 import { IoSettingsOutline } from "react-icons/io5";
 import { LuUser } from "react-icons/lu";
 import ThemeController from "./ThemeController";
+import { AuthContext } from "../App";
 
 export default function Homepage() {
   const navigate = useNavigate();
-
   const handleNavigation = (path) => {
     navigate(path);
+  };
+  const { isLoggedIn, setIsLoggedIn, setLoading } = useContext(AuthContext);
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/logout`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(response.data);
+      if (response.data.message === "Logged out successfully") {
+        setIsLoggedIn(false);
+        handleNavigation("/");
+      }
+    } catch (err) {
+      console.error("Logout error:", err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -89,12 +115,21 @@ export default function Homepage() {
               </button>
             </li>
             <li>
-              <button
-                className="text-base-content"
-                onClick={() => handleNavigation("/login")}>
-                <CgLogIn className="w-5 h-5" />
-                <a>Login</a>
-              </button>
+              {!isLoggedIn ? (
+                <button
+                  className="text-base-content"
+                  onClick={() => handleNavigation("/login")}>
+                  <CgLogIn className="w-5 h-5" />
+                  <a>Login</a>
+                </button>
+              ) : (
+                <button
+                  className="text-base-content"
+                  onClick={(e) => handleLogout(e)}>
+                  <CgLogIn className="w-5 h-5" />
+                  <a>Logout</a>
+                </button>
+              )}
             </li>
             <li className="mt-auto"></li>
             {/* <p className="ml-8">Select Theme</p> */}

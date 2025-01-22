@@ -32,21 +32,16 @@ function App() {
 
   useEffect(() => {
     const validateSession = async () => {
-      const sessionCookie = Cookies.get("session");
-
-      if (!sessionCookie) {
-        setLoading(false);
-        return;
-      }
-
+      setLoading(true);
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/session/validate`,
-          { withCredentials: true }
+          {
+            withCredentials: true,
+          }
         );
 
         setIsLoggedIn(response.data.isLoggedIn);
-
         if (!response.data.isLoggedIn) {
           Cookies.remove("session");
         }
@@ -61,6 +56,7 @@ function App() {
 
     validateSession();
   }, []);
+
   const listContextValue = useMemo(
     () => ({
       genreList,
