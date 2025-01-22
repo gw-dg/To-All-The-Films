@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { IoSettingsOutline } from "react-icons/io5";
 
 export default function ThemeController() {
-  const [theme, setTheme] = useState(
-    localStorage.getItem("theme") || "default"
-  );
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
   const themes = [
     "light",
