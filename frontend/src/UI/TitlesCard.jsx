@@ -2,10 +2,18 @@ import React, { useContext, useEffect } from "react";
 import axios from "axios";
 import { IoIosAdd } from "react-icons/io";
 import { ListContext, AuthContext, MiscContext } from "../App";
+import { useNavigate } from "react-router-dom";
 
 export default function TitleCard() {
   const { particularGenreMovieList, setParticularGenreMovieList } =
     useContext(ListContext);
+
+  const navigate = useNavigate();
+
+  const handleClick = (id) => {
+    navigate(`/title/${id}`);
+  };
+
   const { setLoading } = useContext(AuthContext);
   const { andOr, selectedCards } = useContext(MiscContext);
   useEffect(() => {
@@ -55,7 +63,8 @@ export default function TitleCard() {
             <img
               src={`https://image.tmdb.org/t/p/w500${title.poster_path}`}
               alt={title.title}
-              className="h-40 rounded-lg mt-2 mb-2 w-28 object-cover" // Removed -ml-12 and margins
+              className="h-40 rounded-lg mt-2 mb-2 w-28 object-cover cursor-pointer"
+              onClick={() => handleClick(title.id)}
             />
           </figure>
           {/* Rating Box */}
@@ -68,13 +77,17 @@ export default function TitleCard() {
           <div className="card-body py-4 pl-0">
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="card-title text-xl">{title.title}</h2>
+                <a onClick={() => handleClick(title.id)}>
+                  <h2 className="card-title text-xl cursor-pointer hover:text-secondary">
+                    {title.title}
+                  </h2>
+                </a>
                 <button className="btn btn-sm btn-square">
-                  <IoIosAdd className="w-5 h-5" />
+                  <IoIosAdd className="w-5 h-5 " />
                 </button>
               </div>
               <p className="text-sm opacity-70 break-words whitespace-normal flex-1 leading-tight">
-                {title.original_title}
+                {title.release_date.split("-")[0]}
               </p>
               <p className="mt-4 text-base-content/70 text-sm line-clamp-3">
                 {title.overview}

@@ -75,62 +75,10 @@ export default function Body() {
         </div>
 
         <div className="mt-5 flex flex-col">
-          {/* <span className="text-left pl-4 font-montserrat">Trending</span> */}
-          {/* <div className="carousel carousel-center rounded-box max-w space-x-4 p-4">
-            {[
-              "photo-1559703248-dcaaec9fab78",
-              "photo-1565098772267-60af42b81ef2",
-              "photo-1572635148818-ef6fd45eb394",
-              "photo-1494253109108-2e30c049369b",
-              "photo-1550258987-190a2d41a8ba",
-              "photo-1559181567-c3190ca9959b",
-              "photo-1601004890684-d8cbf643f5f2",
-              "photo-1601004890684-d8cbf643f5f2",
-              "photo-1601004890684-d8cbf643f5f2",
-              "photo-1601004890684-d8cbf643f5f2",
-            ].map((photo, index) => (
-              <div key={index} className="carousel-item flex flex-col">
-                <img
-                  src={`https://img.daisyui.com/images/stock/${photo}.webp`}
-                  className="rounded-box h-40 w-64 object-cover" // Added fixed dimensions and object-cover
-                  alt={`Carousel image ${index + 1}`}
-                />
-                <p>yes</p>
-              </div>
-            ))}
-          </div> */}
-
           <Card />
         </div>
         {/* Second carousel */}
-        <div className="flex flex-col">
-          {/* <span className="text-left pl-4 font-montserrat">
-            Curated Titles For You
-          </span> */}
-          {/* <div className="-mt-6 carousel carousel-center rounded-box max-w space-x-4 p-4">
-            {[
-              "photo-1559703248-dcaaec9fab78",
-              "photo-1565098772267-60af42b81ef2",
-              "photo-1572635148818-ef6fd45eb394",
-              "photo-1494253109108-2e30c049369b",
-              "photo-1550258987-190a2d41a8ba",
-              "photo-1559181567-c3190ca9959b",
-              "photo-1601004890684-d8cbf643f5f2",
-              "photo-1601004890684-d8cbf643f5f2",
-              "photo-1601004890684-d8cbf643f5f2",
-              "photo-1601004890684-d8cbf643f5f2",
-            ].map((photo, index) => (
-              <div key={index} className="carousel-item flex flex-col">
-                <img
-                  src={`https://img.daisyui.com/images/stock/${photo}.webp`}
-                  className="rounded-box h-40 w-64 object-cover" // Added fixed dimensions and object-cover
-                  alt={`Carousel image ${index + 1}`}
-                />
-                <p>yes</p>
-              </div>
-            ))}
-          </div> */}
-        </div>
+        <div className="flex flex-col"></div>
       </div>
       <div className="mt-7 absolute left-1/2 transform -translate-x-1/2 z-40">
         <Avatar />
@@ -142,39 +90,6 @@ export default function Body() {
           Movies for you
         </span>
 
-        {/* Centered tabs */}
-        {/* <div className="flex flex-col items-center">
-          <div role="tablist" className="tabs tabs-bordered">
-            <input
-              type="radio"
-              name="my_tabs_1"
-              role="tab"
-              className="tab tab-lg flex-1 whitespace-nowrap"
-              aria-label="Based on your taste"
-            />
-            <div role="tabpanel" className="tab-content p-4">
-              <p>Content for "Based on your taste" goes here.</p>
-            </div>
-
-            <input
-              type="radio"
-              name="my_tabs_1"
-              role="tab"
-              className="tab tab-lg flex-1 whitespace-nowrap"
-              aria-label="Based on your mood"
-              defaultChecked
-            />
-            <div role="tabpanel" className="tab-content p-4">
-              <p className="text-center mb-4">
-                What would you like to watch today?
-              </p>
-              <GenreCard />
-            </div>
-          </div>
-
-          {/* Tab content container */}
-        {/* <div className="w-full mt-6">yes</div> }
-        </div> */}
         {/* Centered tabs */}
         <div className="flex flex-col items-center">
           <TabContent />

@@ -13,6 +13,7 @@ import {
 import Homepage from "./UI/Homepage";
 import Credits from "./UI/Credits";
 import Preferences from "./UI/Preferences";
+import MovieDetail from "./UI/MovieDetail";
 
 export const ListContext = createContext();
 export const AuthContext = createContext();
@@ -28,6 +29,7 @@ function App() {
   const [andOr, setAndOr] = useState("and");
   const [selectedCards, setSelectedCards] = useState({ 80: true });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [director, setDirector] = useState("");
   const location = useLocation();
 
   useEffect(() => {
@@ -69,6 +71,8 @@ function App() {
       setParticularGenreMovieList,
       titleDetail,
       setTitleDetail,
+      director,
+      setDirector,
     }),
     [
       genreList,
@@ -76,6 +80,7 @@ function App() {
       trendingTvList,
       particularGenreMovieList,
       titleDetail,
+      director,
     ]
   );
 
@@ -116,6 +121,7 @@ function App() {
               />
               <Route path="/credits" element={<Credits />} />
               <Route path="/preferences" element={<Preferences />} />
+              <Route path="/title/:movieId" element={<MovieDetail />} />
               <Route path="*" element={<Navigate to="/home" replace />} />
             </Routes>
           )}
