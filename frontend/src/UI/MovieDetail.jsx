@@ -246,7 +246,7 @@ const MovieDetail = () => {
                       <div
                         key={title.id}
                         className="flex flex-col  text-start space-y-2">
-                        <div className="w-64 h-36 rounded-md overflow-hidden shadow-md">
+                        <div className="w-64 h-36 rounded-xl overflow-hidden shadow-md">
                           <img
                             src={
                               title.poster_path
