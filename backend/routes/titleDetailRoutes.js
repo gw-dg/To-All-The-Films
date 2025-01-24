@@ -9,7 +9,7 @@ router.get("/title/movie/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const response = await axios.get(
-      `https://api.themoviedb.org/3/movie/${id}?language=en-US&append_to_response=videos,images,credits`,
+      `https://api.themoviedb.org/3/movie/${id}?language=en-US&append_to_response=videos,similar,credits,recommendations`,
       {
         headers: {
           accept: "application/json",

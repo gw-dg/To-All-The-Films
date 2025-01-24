@@ -14,6 +14,7 @@ import Homepage from "./UI/Homepage";
 import Credits from "./UI/Credits";
 import Preferences from "./UI/Preferences";
 import MovieDetail from "./UI/MovieDetail";
+import Profile from "./UI/Profile";
 
 export const ListContext = createContext();
 export const AuthContext = createContext();
@@ -30,6 +31,7 @@ function App() {
   const [selectedCards, setSelectedCards] = useState({ 80: true });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [director, setDirector] = useState("");
+  const [cast, setCast] = useState([{}]);
   const location = useLocation();
 
   useEffect(() => {
@@ -73,6 +75,8 @@ function App() {
       setTitleDetail,
       director,
       setDirector,
+      cast,
+      setCast,
     }),
     [
       genreList,
@@ -81,6 +85,7 @@ function App() {
       particularGenreMovieList,
       titleDetail,
       director,
+      cast,
     ]
   );
 
@@ -122,6 +127,7 @@ function App() {
               <Route path="/credits" element={<Credits />} />
               <Route path="/preferences" element={<Preferences />} />
               <Route path="/title/:movieId" element={<MovieDetail />} />
+              <Route path="/profile/:username" element={<Profile />} />
               <Route path="*" element={<Navigate to="/home" replace />} />
             </Routes>
           )}
