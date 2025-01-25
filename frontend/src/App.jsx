@@ -32,6 +32,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [director, setDirector] = useState("");
   const [cast, setCast] = useState([{}]);
+  const [username, setUsername] = useState("");
   const location = useLocation();
 
   useEffect(() => {
@@ -95,8 +96,10 @@ function App() {
       setIsLoggedIn,
       loading,
       setLoading,
+      username,
+      setUsername,
     }),
-    [isLoggedIn, loading]
+    [isLoggedIn, loading, username]
   );
 
   const miscContextValue = useMemo(

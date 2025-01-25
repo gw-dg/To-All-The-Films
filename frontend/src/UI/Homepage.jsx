@@ -15,7 +15,8 @@ export default function Homepage() {
   const handleNavigation = (path) => {
     navigate(path);
   };
-  const { isLoggedIn, setIsLoggedIn, setLoading } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn, setLoading, username } =
+    useContext(AuthContext);
 
   const handleLogout = async (e) => {
     e.preventDefault();
@@ -93,7 +94,7 @@ export default function Homepage() {
             <li>
               <button
                 className="text-base-content"
-                onClick={() => handleNavigation("/profile/:id")}>
+                onClick={() => handleNavigation(`/profile/${username}`)}>
                 <LuUser className="w-5 h-5" />
                 <a>Profile</a>
               </button>

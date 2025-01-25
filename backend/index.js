@@ -6,6 +6,7 @@ const trendingRoutes = require("./routes/trendingRoutes");
 const genreRoutes = require("./routes/genreRoutes");
 const titleDetailRoutes = require("./routes/titleDetailRoutes");
 const loginRoutes = require("./routes/loginRoutes");
+const profileRoutes = require("./routes/profileRoutes");
 require("dotenv").config();
 
 const app = express();
@@ -32,6 +33,7 @@ app.use("/api", trendingRoutes);
 app.use("/api", genreRoutes);
 app.use("/api", titleDetailRoutes);
 app.use("/", loginRoutes);
+app.use("/", profileRoutes);
 
 connectDB().then(() => {
   app.listen(PORT, () => {});

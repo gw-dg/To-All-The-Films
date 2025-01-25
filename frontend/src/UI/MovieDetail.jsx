@@ -133,8 +133,11 @@ const MovieDetail = () => {
                       <div className="flex items-center gap-1">
                         <FaClock className="w-4 h-4" />
                         <span>
-                          {Math.floor(titleDetail?.runtime / 60)}h{" "}
-                          {titleDetail?.runtime % 60}m
+                          {titleDetail?.runtime
+                            ? `${Math.floor(titleDetail.runtime / 60)}h ${
+                                titleDetail.runtime % 60
+                              }m`
+                            : "N/A"}
                         </span>
                       </div>
                       <div className="flex items-center gap-1">

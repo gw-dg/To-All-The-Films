@@ -24,7 +24,7 @@ import { AuthContext } from "../App";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { loading, setLoading, isLoggedIn, setIsLoggedIn } =
+  const { loading, setLoading, isLoggedIn, setIsLoggedIn, setUsername } =
     useContext(AuthContext);
 
   const [showLoginPassword, setShowLoginPassword] = useState(false);
@@ -83,6 +83,9 @@ const Login = () => {
         { idToken },
         {
           withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
 
@@ -90,6 +93,8 @@ const Login = () => {
 
       if (response.data.message === "Login successful") {
         // to avoid persisting authentication state on the client side
+        console.log(response.data.user.username);
+        setUsername(response.data.user.username);
         await auth.signOut();
         setIsLoggedIn(true);
         navigate("/home");
