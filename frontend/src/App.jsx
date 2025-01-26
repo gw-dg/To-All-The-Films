@@ -15,6 +15,8 @@ import Credits from "./UI/Credits";
 import Preferences from "./UI/Preferences";
 import MovieDetail from "./UI/MovieDetail";
 import Profile from "./UI/Profile";
+import Layout from "./UI/Layout";
+import Body from "./UI/Body";
 
 export const ListContext = createContext();
 export const AuthContext = createContext();
@@ -47,7 +49,9 @@ function App() {
         );
 
         setIsLoggedIn(response.data.isLoggedIn);
-        if (!response.data.isLoggedIn) {
+        if (response.data.isLoggedIn) {
+          setUsername(response.data.username);
+        } else {
           Cookies.remove("session");
         }
       } catch (error) {
@@ -119,20 +123,23 @@ function App() {
           {loading ? (
             <div>Loading...</div>
           ) : (
-            <Routes>
-              <Route path="/home" element={<Homepage />} />
-              <Route
-                path="/login"
-                element={
-                  isLoggedIn ? <Navigate to="/home" replace /> : <Login />
-                }
-              />
-              <Route path="/credits" element={<Credits />} />
-              <Route path="/preferences" element={<Preferences />} />
-              <Route path="/title/:movieId" element={<MovieDetail />} />
-              <Route path="/profile/:username" element={<Profile />} />
-              <Route path="*" element={<Navigate to="/home" replace />} />
-            </Routes>
+            <Layout>
+              <Routes>
+                <Route
+                  path="/login"
+                  element={
+                    isLoggedIn ? <Navigate to="/home" replace /> : <Login />
+                  }
+                />
+
+                <Route path="/home" element={<Body />} />
+                <Route path="/credits" element={<Credits />} />
+                <Route path="/preferences" element={<Preferences />} />
+                <Route path="/title/:movieId" element={<MovieDetail />} />
+                <Route path="/profile/:username" element={<Profile />} />
+                <Route path="*" element={<Navigate to="/home" replace />} />
+              </Routes>
+            </Layout>
           )}
         </MiscContext.Provider>
       </ListContext.Provider>

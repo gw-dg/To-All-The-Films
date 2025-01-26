@@ -182,7 +182,16 @@ router.get("/session/validate", async (req, res) => {
     const decodedClaims = await admin
       .auth()
       .verifySessionCookie(sessionCookie, true);
-    res.status(200).json({ isLoggedIn: true, user: decodedClaims });
+    const mongoUser = await User.findOne({ firebaseUID: decodedClaims.uid });
+
+    if (!mongoUser) {
+      return res.status(404).json({ message: "User not found in database" });
+    }
+    res.status(200).json({
+      isLoggedIn: true,
+      user: decodedClaims,
+      username: mongoUser.username,
+    });
   } catch (error) {
     res.status(401).json({ isLoggedIn: false, message: "Invalid session" });
   }

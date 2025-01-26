@@ -24,14 +24,14 @@ router.get("/profile/:username", async (req, res) => {
       user: {
         username: user.username,
         email: user.email,
-        about: user.about || "No bio available",
+        about: user.about || "",
         backgroundImage: user.backgroundImage,
         profileImage: user.profileImage,
         isOwnProfile: isItYourOwnId,
       },
       stats: {
-        moviesWatched: user.movies_watched.length,
-        favoriteMovies: user.favMovies.length,
+        moviesWatched: user.movies_watched,
+        favoriteMovies: user.favMovies,
         preferences: {
           favoriteActors: user.preferrence?.favActorId?.length || 0,
           favoriteActresses: user.preferrence?.favActoressId?.length || 0,

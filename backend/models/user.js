@@ -62,6 +62,7 @@ const userSchema = new mongoose.Schema({
   },
   about: {
     type: String,
+    default: "",
   },
   movies_watched: [moviesWatchedSchema],
   favMovies: [

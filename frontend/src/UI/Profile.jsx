@@ -1,28 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaMapPin, FaEllipsisH } from "react-icons/fa";
-import { AuthContext } from "../App";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-const ProfilePage = () => {
+const Profile = () => {
   const { username } = useParams();
   const [userDetails, setUserDetails] = useState({});
-  // const { loading, setLoading } = useContext(AuthContext);
-  useEffect(() => {
-    // console.log("useEffect triggered with username:", username);
 
-    if (!username) {
-      // console.log("Username is undefined, skipping fetch.");
-      return;
-    }
-    // if (userDetails.user) {
-    //   console.log("details already fetched. Skipping...");
-    //   console.log(userDetails);
-    //   return;
-    // }
+  useEffect(() => {
+    if (!username) return;
+
     const fetchUserDetails = async () => {
-      // console.log("Fetching user details for:", username);
-      // setLoading(true);
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/profile/${username}`,
@@ -33,16 +21,9 @@ const ProfilePage = () => {
             },
           }
         );
-
         setUserDetails(response.data);
-        // console.log(
-        //   "User details fetched:",
-        //   userDetails?.user?.backgroundImage
-        // );
       } catch (error) {
         console.error("Error fetching user details:", error);
-      } finally {
-        // setLoading(false);
       }
     };
 
@@ -56,7 +37,7 @@ const ProfilePage = () => {
         <div
           className="absolute inset-0 scale-110 bg-cover bg-center"
           style={{
-            // backgroundImage: `url(${userDetails?.user?.backgroundImage})`,
+            backgroundImage: `url(${userDetails?.user?.backgroundImage})`,
             transform: `translateY(${
               typeof window !== "undefined" ? window.scrollY * 0.5 : 0
             }px)`,
@@ -65,10 +46,10 @@ const ProfilePage = () => {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-base-100 via-base-100/50 to-transparent">
           <div className="container mx-auto px-4 py-6 h-full flex items-center justify-center">
-            <div className="flex items-end gap-6 w-full max-w-5xl">
+            <div className="flex items-center gap-6 w-full max-w-5xl">
               {/* Profile Picture */}
               <div className="avatar">
-                <div className="w-28 rounded-full ring-1 ring-primary">
+                <div className="w-24 rounded-full ring-1 ring-primary">
                   <img
                     src={`${userDetails?.user?.backgroundImage}`}
                     alt="Profile Picture"
@@ -77,30 +58,31 @@ const ProfilePage = () => {
               </div>
 
               {/* Profile Info */}
-              <div className="flex-1 text-base-content space-y-4">
+              <div className="flex-1 text-base-content space-y-1">
                 <div className="flex items-center gap-4">
-                  <h1 className="text-3xl font-bold">GwdG</h1>
+                  <h1 className="text-3xl font-bold">
+                    {userDetails?.user?.username}
+                  </h1>
                   <button className="btn btn-ghost btn-sm btn-square">
                     <FaEllipsisH className="h-5 w-5" />
                   </button>
                 </div>
-                <p className="opacity-90">
-                  I am somewhat of a cinephile myself.
-                </p>
-                <div className="flex items-center">
-                  <FaMapPin className="h-4 w-4 mr-1" />
-                  <span className="text-sm">India</span>
-                </div>
-
-                {/* Stats */}
+                <p className="opacity-90">{userDetails?.user?.about}</p>
               </div>
+
+              {/* Stats */}
               <div className="flex gap-6">
                 {[
-                  { count: 208, label: "FILMS" },
-                  { count: 4, label: "THIS YEAR" },
-                  { count: 1, label: "LIST" },
-                  { count: 13, label: "FOLLOWING" },
-                  { count: 15, label: "FOLLOWERS" },
+                  {
+                    count: `${userDetails?.stats?.moviesWatched.length}`,
+                    label: "FILMS",
+                  },
+                  {
+                    count: `${userDetails?.stats?.favoriteMovies.length}`,
+                    label: "FAVORITES",
+                  },
+                  { count: 0, label: "LISTS" },
+                  { count: 15, label: "FRIENDS" },
                 ].map(({ count, label }) => (
                   <div key={label} className="text-center">
                     <div className="text-2xl font-semibold">{count}</div>
@@ -114,12 +96,12 @@ const ProfilePage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto max-w-4xl px-4 py-8">
         {/* Favorite Films */}
         <section className="mb-12">
           <h2 className="text-xl font-semibold mb-6">Favorite Films</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
-            {[...Array(6)].map((_, i) => (
+            {userDetails?.user?.favoriteMovies?.slice(0, 4).map((_, i) => (
               <div key={i} className="relative group">
                 <div className="aspect-[2/3] rounded-md overflow-hidden">
                   <img
@@ -172,4 +154,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default Profile;
