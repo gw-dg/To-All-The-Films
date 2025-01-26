@@ -25,6 +25,13 @@ const preferrenceSchema = new mongoose.Schema({
 const moviesWatchedSchema = new mongoose.Schema({
   movieId: {
     type: String,
+    required: true,
+  },
+  movieName: {
+    type: String,
+  },
+  posterPath: {
+    type: String,
   },
   rating: {
     type: String,
@@ -32,6 +39,19 @@ const moviesWatchedSchema = new mongoose.Schema({
   dateWatched: {
     type: Date,
     default: Date.now,
+  },
+});
+
+const favoritesSchema = new mongoose.Schema({
+  movieId: {
+    type: String,
+    required: true,
+  },
+  movieName: {
+    type: String,
+  },
+  posterPath: {
+    type: String,
   },
 });
 
@@ -64,12 +84,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
-  movies_watched: [moviesWatchedSchema],
-  favMovies: [
-    {
-      type: String,
-    },
-  ],
+  movies_watched: { type: [moviesWatchedSchema], default: [] },
+  favMovies: { type: [favoritesSchema], default: [] },
 });
 
 const User = mongoose.model("User", userSchema);

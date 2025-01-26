@@ -51,7 +51,7 @@ const Profile = () => {
               <div className="avatar">
                 <div className="w-24 rounded-full ring-1 ring-primary">
                   <img
-                    src={`${userDetails?.user?.backgroundImage}`}
+                    src={`${userDetails?.user?.profileImage}`}
                     alt="Profile Picture"
                   />
                 </div>

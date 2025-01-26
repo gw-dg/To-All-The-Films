@@ -12,20 +12,45 @@ import {
   FaCamera,
   FaFilm,
   FaThumbsUp,
+  FaEye,
+  FaPlus,
+  FaBookmark,
 } from "react-icons/fa";
+import { AiFillHeart, AiFillStar } from "react-icons/ai";
+
 import { useParams } from "react-router-dom";
 import { AuthContext, ListContext } from "../App";
 import { useNavigate } from "react-router-dom";
+import LogMovieModal from "./LogMovieModal";
+// import { Calendar } from "react-datetime-picker";
 
 const MovieDetail = () => {
   const { movieId } = useParams();
-  const { loading, setLoading } = useContext(AuthContext);
+  const { isLoggedIn, loading, setLoading } = useContext(AuthContext);
   const { titleDetail, setTitleDetail, director, setDirector, cast, setCast } =
     useContext(ListContext);
+
   const navigate = useNavigate();
 
   const handleClick = (id) => {
     navigate(`/title/${id}`);
+  };
+
+  const favoriteMovie = async () => {
+    await axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/favorite`,
+      {
+        titleId: movieId,
+        title: titleDetail?.title,
+        posterPath: titleDetail?.poster_path,
+      },
+      {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   };
 
   useEffect(() => {
@@ -73,6 +98,7 @@ const MovieDetail = () => {
   }, [movieId]);
 
   const [showTrailer, setShowTrailer] = useState(false);
+  const [showAddMovie, setShowAddMovie] = useState(false);
 
   return (
     <>
@@ -154,8 +180,25 @@ const MovieDetail = () => {
                         <FaPlayCircle className="w-4 h-4" />
                         Watch Trailer
                       </button>
+                      {isLoggedIn && (
+                        <>
+                          <button
+                            className="btn btn-outline btn-sm "
+                            onClick={() => setShowAddMovie(true)}
+                            disabled={!titleDetail?.id}>
+                            <FaPlus className="w-4 h-4" />
+                            Add
+                          </button>
+                          <button
+                            className="btn btn-outline btn-sm"
+                            onClick={() => favoriteMovie()}>
+                            <FaHeart className="w-4 h-4" />
+                            Favorite
+                          </button>
+                        </>
+                      )}
                       <button className="btn btn-outline btn-sm">
-                        <FaHeart className="w-4 h-4" />
+                        <FaBookmark className="w-4 h-4" />
                         Add to Watchlist
                       </button>
                       <button className="btn btn-outline btn-sm">
@@ -168,6 +211,7 @@ const MovieDetail = () => {
               </div>
             </div>
           </div>
+
           {/* Movie Content */}
           <div className="container mx-auto px-4 py-12 max-w-screen">
             <div className="grid md:grid-cols-3 gap-12 justify-center">
@@ -278,6 +322,7 @@ const MovieDetail = () => {
               </div>
             </div>
           </div>
+
           {/* Trailer Modal */}
           {showTrailer && (
             <div className="modal modal-open">
@@ -296,6 +341,17 @@ const MovieDetail = () => {
                 </button>
               </div>
             </div>
+          )}
+
+          {showAddMovie && (
+            <LogMovieModal
+              titleId={titleDetail?.id}
+              posterPath={titleDetail?.poster_path}
+              isOpen={showAddMovie}
+              onClose={() => setShowAddMovie(false)}
+              movieTitle={`${titleDetail?.title}`}
+              movieYear={`${titleDetail?.release_date.split("-")[0]}`}
+            />
           )}
         </div>
       )}

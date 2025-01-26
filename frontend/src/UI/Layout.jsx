@@ -36,7 +36,7 @@ export default function Layout({ children }) {
       console.log(response.data);
       if (response.data.message === "Logged out successfully") {
         setIsLoggedIn(false);
-        handleNavigation("/");
+        // handleNavigation("/");
       }
     } catch (err) {
       console.error("Logout error:", err);

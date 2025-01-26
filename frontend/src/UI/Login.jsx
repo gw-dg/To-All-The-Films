@@ -97,7 +97,7 @@ const Login = () => {
         setUsername(response.data.user.username);
         await auth.signOut();
         setIsLoggedIn(true);
-        navigate("/home");
+        // navigate("/home");
       }
     } catch (err) {
       console.error("Login error:", err);
@@ -160,7 +160,7 @@ const Login = () => {
         // Sign out from client side since we're using server session
         await auth.signOut();
         setIsLoggedIn(true);
-        navigate("/home");
+        // navigate("/home");
       }
     } catch (err) {
       console.error("Registration error:", err);
