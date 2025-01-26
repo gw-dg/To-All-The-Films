@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaMapPin, FaEllipsisH } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { FaMapPin, FaEllipsisH, FaStar } from "react-icons/fa";
+import { useParams, useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const { username } = useParams();
   const [userDetails, setUserDetails] = useState({});
+  const navigate = useNavigate();
+  const handleClick = (id) => {
+    navigate(`/title/${id}`);
+  };
 
   useEffect(() => {
     if (!username) return;
@@ -99,23 +103,27 @@ const Profile = () => {
       <div className="container mx-auto max-w-4xl px-4 py-8">
         {/* Favorite Films */}
         <section className="mb-12">
-          <h2 className="text-xl font-semibold mb-6">Favorite Films</h2>
+          <h2 className="text-xl font-semibold font-montserrat mb-6">
+            Favorite Films
+          </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
-            {userDetails?.user?.favoriteMovies?.slice(0, 4).map((_, i) => (
-              <div key={i} className="relative group">
-                <div className="aspect-[2/3] rounded-md overflow-hidden">
+            {userDetails?.stats?.favoriteMovies?.slice(0, 4).map((title) => (
+              <div key={title.movieId} className="flex flex-col">
+                <figure className="p-2 ">
                   <img
-                    src="/placeholder.svg"
-                    alt={`Movie ${i + 1}`}
-                    className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                    src={`https://image.tmdb.org/t/p/w400${title.posterPath}`}
+                    className="h-64 rounded-lg w-48 object-cover cursor-pointer"
+                    alt={title.movieName}
+                    onClick={() => handleClick(title.movieId)}
                   />
-                </div>
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                  <div className="absolute bottom-0 p-3">
-                    <p className="text-white text-sm font-medium">
-                      Movie Title
-                    </p>
-                    <p className="text-neutral-content text-xs">2023</p>
+                </figure>
+                <div className="card-body p-2 -mt-3 w-36">
+                  <div className="flex items-center justify-between">
+                    <a onClick={() => handleClick(title.movieId)}>
+                      <h2 className="card-title text-base break-words whitespace-normal flex-1 leading-tight cursor-pointer hover:text-primary">
+                        {title.movieName}
+                      </h2>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -125,25 +133,51 @@ const Profile = () => {
 
         {/* Recent Activity */}
         <section>
-          <h2 className="text-xl font-semibold mb-6">Recent Activity</h2>
+          <h2 className="text-xl font-semibold font-montserrat mb-6">
+            Recent Activity
+          </h2>
+          {/* {console.log(userDetails?.recentActivity)} */}
           <div className="space-y-4">
-            {[...Array(3)].map((_, i) => (
-              <div key={i} className="flex gap-4 bg-base-200 p-4 rounded-md">
-                <div className="avatar w-16 h-24">
-                  <div className="rounded-md">
-                    <img
-                      src="/placeholder.svg"
-                      alt={`Recent Movie ${i + 1}`}
-                      className="w-full h-full object-cover"
-                    />
+            {userDetails?.recentActivity?.map((title) => (
+              <div
+                key={title.movieId}
+                className="card card-side bg-base-200 rounded-md relative grid grid-cols-[150px_1fr]">
+                <figure className="flex items-center justify-center">
+                  <img
+                    src={`https://image.tmdb.org/t/p/w500${title.posterPath}`}
+                    alt={title.title}
+                    className="h-28 rounded-lg mt-2 mb-2 w-20 -ml-10 object-cover cursor-pointer"
+                    onClick={() => handleClick(title.movieId)}
+                  />
+                </figure>
+                {/* Content section */}
+                <div className="card-body py-4 -ml-16">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <a onClick={() => handleClick(title.movieId)}>
+                        <h2 className="card-title text-xl font-montserrat mb-2 cursor-pointer hover:text-secondary">
+                          {title.movieName}
+                        </h2>
+                      </a>
+                    </div>
+                    <div className="flex items-center gap-1 text-warning">
+                      {[...Array(parseInt(title.rating))].map((_, i) => (
+                        <FaStar
+                          key={i}
+                          className="w-4 h-4 text-primary-content"
+                        />
+                      ))}
+                      {/* {[...Array(5 - parseInt(title.rating))].map((_, i) => (
+                        <FaRegStar
+                          key={i}
+                          className="w-4 h-4 text-base-content/50"
+                        />
+                      ))} */}
+                    </div>
+                    <p className="text-sm opacity-70 mt-2 font-montserrat">
+                      {new Date(title.dateWatched).toLocaleDateString()}
+                    </p>
                   </div>
-                </div>
-                <div>
-                  <h3 className="font-medium">Movie Title</h3>
-                  <p className="text-sm text-neutral-content mt-1">
-                    Watched • 2 days ago
-                  </p>
-                  <div className="mt-2 text-sm text-neutral-content">★★★★½</div>
                 </div>
               </div>
             ))}

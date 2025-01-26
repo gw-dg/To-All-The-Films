@@ -46,6 +46,9 @@ router.get("/profile/:username", async (req, res) => {
           movieId: movie.movieId,
           rating: movie.rating,
           dateWatched: movie.dateWatched,
+          posterPath: movie.posterPath,
+          movieName: movie.movieName,
+          rating: movie.rating,
         })),
     });
   } catch (err) {

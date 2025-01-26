@@ -17,10 +17,10 @@ export default function TitleCard() {
   const { setLoading } = useContext(AuthContext);
   const { andOr, selectedCards } = useContext(MiscContext);
   useEffect(() => {
-    if (particularGenreMovieList?.results) return;
+    // if (particularGenreMovieList?.results) return;
 
     const fetchTitles = async () => {
-      setLoading(true);
+      // setLoading(true);
       try {
         const selectedIds = Object.keys(selectedCards)
           .filter((id) => selectedCards[id]) // Get keys with `true` values
@@ -41,13 +41,13 @@ export default function TitleCard() {
       } catch (error) {
         console.error("Error:", error.message);
       } finally {
-        setLoading(false);
+        // setLoading(false);
       }
     };
     fetchTitles();
 
     return () => setParticularGenreMovieList(null);
-  }, [selectedCards, andOr, setParticularGenreMovieList, setLoading]);
+  }, [selectedCards, andOr]);
   if (
     !particularGenreMovieList?.results ||
     particularGenreMovieList.results.length === 0
