@@ -23,7 +23,7 @@ export default function Card() {
             <img
               src={`https://image.tmdb.org/t/p/w400${title.poster_path}`}
               className="h-48 rounded-lg w-36 object-cover cursor-pointer"
-              alt={title.name}
+              alt={title.title}
               onClick={() => handleClick(title.id)}
             />
           </figure>
@@ -31,13 +31,13 @@ export default function Card() {
             <div className="flex items-center justify-between">
               <a onClick={() => handleClick(title.id)}>
                 <h2 className="card-title text-base break-words whitespace-normal flex-1 leading-tight cursor-pointer hover:text-primary">
-                  {title.name}
+                  {title.title}
                 </h2>
               </a>
               <IoIosAdd className="flex-shrink-0 w-5 h-7 cursor-pointer hover:text-success" />
             </div>
             <p className="text-sm opacity-70 -mt-1 break-words whitespace-normal flex-1 leading-tight">
-              {title.first_air_date.split("-")[0]}
+              {title.release_date.split("-")[0]}
             </p>
           </div>
         </div>

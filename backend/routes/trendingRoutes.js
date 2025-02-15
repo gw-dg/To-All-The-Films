@@ -8,7 +8,7 @@ const api_key = process.env.api_key;
 router.get("/trending/movie", async (req, res) => {
   try {
     const response = await axios.get(
-      `https://api.themoviedb.org/3/trending/tv/week?language=en-US`,
+      `https://api.themoviedb.org/3/trending/movie/week?language=en-US`,
       {
         headers: {
           accept: "application/json",
