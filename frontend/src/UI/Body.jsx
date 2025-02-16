@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import Avatar from "./Avatar";
 import { ListContext, AuthContext } from "../App";
 import axios from "axios";
@@ -6,22 +6,21 @@ import Card from "./Card";
 import { IoIosAdd } from "react-icons/io";
 import GenreCard from "./GenreCard";
 import TabContent from "./TabContent";
+import { useNavigate } from "react-router-dom";
 
 export default function Body() {
-  const {
-    trendingMovieList,
-    setTrendingMovieList,
-    trendingTvList,
-    setTrendingTvList,
-  } = useContext(ListContext);
-
+  const [trendingMovieList, setTrendingMovieList] = useState({});
+  const [searchQuery, setSeachQuery] = useState("");
+  const navigate = useNavigate();
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
   const { setLoading } = useContext(AuthContext);
-
+  // const [searchResults, setSearchResults] = useState({});
   useEffect(() => {
     if (trendingMovieList?.results) return;
 
     const fetchTrendingMovies = async () => {
-      setLoading(true);
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/api/trending/movie`,
@@ -36,14 +35,24 @@ export default function Body() {
         setTrendingMovieList(response.data);
       } catch (error) {
         console.error("Error:", error.message);
-      } finally {
-        setLoading(false);
       }
     };
     fetchTrendingMovies();
 
     // return () => setTrendingMovieList(null);
-  }, [setLoading, setTrendingMovieList]);
+  }, [setTrendingMovieList]);
+
+  const handleInputChange = (e) => {
+    setSeachQuery(e.target.value);
+  };
+
+  const handleEnter = (e) => {
+    if (e.key === "Enter") {
+      handleNavigation(`/search/${searchQuery.trim()}`);
+      console.log(searchQuery);
+    }
+  };
+
   return (
     // Main container - min-height for larger screens, flex-grow for responsiveness
     <div className="min-h-screen relative flex md:flex-row">
@@ -59,6 +68,8 @@ export default function Body() {
               type="text"
               className="grow font-montserrat"
               placeholder="Search"
+              onChange={(e) => handleInputChange(e)}
+              onKeyDown={handleEnter}
             />
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +86,7 @@ export default function Body() {
         </div>
 
         <div className="mt-5 flex flex-col">
-          <Card />
+          <Card trendingMovieList={trendingMovieList} />
         </div>
         {/* Second carousel */}
         <div className="flex flex-col"></div>

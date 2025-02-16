@@ -3,9 +3,9 @@ import { IoIosAdd } from "react-icons/io";
 import { ListContext, AuthContext } from "../App";
 import { useNavigate } from "react-router-dom";
 
-export default function Card() {
-  const { trendingMovieList, trendingTvList } = useContext(ListContext);
-  const { setLoading } = useContext(AuthContext);
+export default function Card({ trendingMovieList }) {
+  // const { trendingMovieList, trendingTvList } = useContext(ListContext);
+  // const { setLoading } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleClick = (id) => {

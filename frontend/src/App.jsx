@@ -17,6 +17,7 @@ import MovieDetail from "./UI/MovieDetail";
 import Profile from "./UI/Profile";
 import Layout from "./UI/Layout";
 import Body from "./UI/Body";
+import SearchPage from "./UI/SearchPage";
 
 export const ListContext = createContext();
 export const AuthContext = createContext();
@@ -24,7 +25,6 @@ export const MiscContext = createContext();
 
 function App() {
   const [genreList, setGenreList] = useState([{ id: "", genreName: "" }]);
-  const [trendingMovieList, setTrendingMovieList] = useState({});
   const [trendingTvList, setTrendingTvList] = useState({});
   const [particularGenreMovieList, setParticularGenreMovieList] = useState({});
   const [titleDetail, setTitleDetail] = useState({});
@@ -70,8 +70,8 @@ function App() {
     () => ({
       genreList,
       setGenreList,
-      trendingMovieList,
-      setTrendingMovieList,
+      // trendingMovieList,
+      // setTrendingMovieList,
       trendingTvList,
       setTrendingTvList,
       particularGenreMovieList,
@@ -85,7 +85,6 @@ function App() {
     }),
     [
       genreList,
-      trendingMovieList,
       trendingTvList,
       particularGenreMovieList,
       titleDetail,
@@ -137,6 +136,7 @@ function App() {
                 <Route path="/preferences" element={<Preferences />} />
                 <Route path="/title/:movieId" element={<MovieDetail />} />
                 <Route path="/profile/:username" element={<Profile />} />
+                <Route path="/search/:searchQuery" element={<SearchPage />} />
                 <Route path="*" element={<Navigate to="/home" replace />} />
               </Routes>
             </Layout>
