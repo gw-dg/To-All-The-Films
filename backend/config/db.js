@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
-// //const mongoUrl =
-// //  "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.3.3";
+const mongoUrl =
+  "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.3.3";
 
-const mongoUrl = `${process.env.MONGOURL}`;
+// const mongoUrl = `${process.env.MONGOURL}`;
 
 //setup connection
 async function connectDB() {

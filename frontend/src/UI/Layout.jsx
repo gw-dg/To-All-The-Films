@@ -83,7 +83,9 @@ export default function Layout({ children }) {
               </label>
             </div>
             <div className="flex-1 justify-center items-center">
-              <a className="text-5xl font-italianno tracking-wider pt-2">
+              <a
+                className="text-5xl font-italianno tracking-wider pt-2 hover:cursor-pointer"
+                onClick={() => handleNavigation("/home")}>
                 To All The Films
               </a>
             </div>
