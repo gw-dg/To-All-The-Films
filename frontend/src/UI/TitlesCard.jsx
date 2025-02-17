@@ -52,7 +52,21 @@ export default function TitleCard() {
     !particularGenreMovieList?.results ||
     particularGenreMovieList.results.length === 0
   )
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center">
+        <div className="flex gap-2 mt-6">
+          {[...Array(3)].map((_, i) => (
+            <div
+              key={i}
+              className="w-3 h-3 rounded-full bg-primary animate-bounce"
+              style={{
+                animationDelay: `${i * 0.15}s`,
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    );
   return (
     <div className="flex-1 max-h-96 bg-base-300 overflow-y-scroll space-y-4">
       {particularGenreMovieList.results.map((title) => (

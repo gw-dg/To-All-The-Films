@@ -12,7 +12,20 @@ export default function Card({ trendingMovieList }) {
     navigate(`/title/${id}`);
   };
 
-  if (!trendingMovieList?.results) return <div>Loading</div>;
+  if (!trendingMovieList?.results)
+    return (
+      <div className="flex gap-2 mt-6">
+        {[...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            className="w-3 h-3 rounded-full bg-primary animate-bounce"
+            style={{
+              animationDelay: `${i * 0.15}s`,
+            }}
+          />
+        ))}
+      </div>
+    );
 
   return (
     <div className="ml-10 grid grid-cols-3 gap-x-2 gap-y-3 p-2 overflow-y-auto max-h-screen">

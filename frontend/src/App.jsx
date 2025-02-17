@@ -18,6 +18,7 @@ import Profile from "./UI/Profile";
 import Layout from "./UI/Layout";
 import Body from "./UI/Body";
 import SearchPage from "./UI/SearchPage";
+import LoadingPage from "./utils/Loading";
 
 export const ListContext = createContext();
 export const AuthContext = createContext();
@@ -58,8 +59,6 @@ function App() {
         console.error("Session validation error:", error);
         setIsLoggedIn(false);
         Cookies.remove("session");
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -120,7 +119,7 @@ function App() {
       <ListContext.Provider value={listContextValue}>
         <MiscContext.Provider value={miscContextValue}>
           {loading ? (
-            <div>Loading...</div>
+            <LoadingPage onLoadComplete={() => setLoading(false)} />
           ) : (
             <Layout>
               <Routes>
@@ -130,7 +129,6 @@ function App() {
                     isLoggedIn ? <Navigate to="/home" replace /> : <Login />
                   }
                 />
-
                 <Route path="/home" element={<Body />} />
                 <Route path="/credits" element={<Credits />} />
                 <Route path="/preferences" element={<Preferences />} />

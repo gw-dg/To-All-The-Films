@@ -17,6 +17,7 @@ import {
   FaBookmark,
 } from "react-icons/fa";
 import { AiFillHeart, AiFillStar } from "react-icons/ai";
+import LoadingPage from "../utils/Loading";
 
 import { useParams } from "react-router-dom";
 import { AuthContext, ListContext } from "../App";
@@ -89,8 +90,6 @@ const MovieDetail = () => {
         setTitleDetail(response.data);
       } catch (error) {
         console.log("Error fetching movie details", error);
-      } finally {
-        setLoading(false);
       }
     };
 

@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { FaMapPin, FaEllipsisH, FaStar } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
+import { AuthContext } from "../App";
 
 const Profile = () => {
   const { username } = useParams();
   const [userDetails, setUserDetails] = useState({});
+  const { setLoading } = useContext(AuthContext);
   const navigate = useNavigate();
   const handleClick = (id) => {
     navigate(`/title/${id}`);
@@ -13,7 +15,6 @@ const Profile = () => {
 
   useEffect(() => {
     if (!username) return;
-
     const fetchUserDetails = async () => {
       try {
         const response = await axios.get(
