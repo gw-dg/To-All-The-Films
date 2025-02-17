@@ -14,16 +14,18 @@ export default function Card({ trendingMovieList }) {
 
   if (!trendingMovieList?.results)
     return (
-      <div className="flex gap-2 mt-6">
-        {[...Array(3)].map((_, i) => (
-          <div
-            key={i}
-            className="w-3 h-3 rounded-full bg-primary animate-bounce"
-            style={{
-              animationDelay: `${i * 0.15}s`,
-            }}
-          />
-        ))}
+      <div className="flex items-center justify-center">
+        <div className="flex gap-2 mt-6">
+          {[...Array(3)].map((_, i) => (
+            <div
+              key={i}
+              className="w-3 h-3 rounded-full bg-primary animate-bounce"
+              style={{
+                animationDelay: `${i * 0.15}s`,
+              }}
+            />
+          ))}
+        </div>
       </div>
     );
 
