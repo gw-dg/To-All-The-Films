@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
+import { motion } from "framer-motion";
 
 const Quotes = [
   {
@@ -188,11 +189,14 @@ const backdrops = [
 
 const LoadingPage = ({ onLoadComplete }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [currentQuote] = useState(() =>
-    Math.floor(Math.random() * Quotes.length)
+
+  const currentQuote = useMemo(
+    () => Math.floor(Math.random() * Quotes.length),
+    []
   );
-  const [currentBackdrop] = useState(() =>
-    Math.floor(Math.random() * backdrops.length)
+  const currentBackdrop = useMemo(
+    () => Math.floor(Math.random() * backdrops.length),
+    []
   );
 
   useEffect(() => {
@@ -201,46 +205,42 @@ const LoadingPage = ({ onLoadComplete }) => {
       if (onLoadComplete) {
         onLoadComplete();
       }
-    }, 1500);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, [onLoadComplete]);
 
-  if (!isLoading) {
-    return null;
-  }
-
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center transition-all duration-1000"
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="min-h-screen flex items-center justify-center bg-cover bg-center relative"
       style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${backdrops[currentBackdrop]})`,
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${backdrops[currentBackdrop]})`,
       }}>
-      <div className="card w-96">
-        <div className="card-body items-center text-center">
-          {/* Quote Section */}
-          <div className="space-y-4">
-            <p className="text-lg text-white font-serif italic animate-fade-in">
-              "{Quotes[currentQuote].quote}"
-            </p>
-            <p className="text-sm text-white">— {Quotes[currentQuote].movie}</p>
-          </div>
+      {/* Blurred Overlay */}
+      {/* <div className="absolute inset-0 backdrop-blur-md"></div> */}
 
-          {/* Loading Dots */}
-          <div className="flex gap-2 mt-6">
-            {[...Array(3)].map((_, i) => (
-              <div
-                key={i}
-                className="w-3 h-3 rounded-full bg-primary animate-bounce"
-                style={{
-                  animationDelay: `${i * 0.15}s`,
-                }}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
+      {/* Card Container */}
+      <motion.div
+        initial={{ y: 30, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="relative z-10 p-6 rounded-2xl w-96 text-center">
+        {/* Quote Section */}
+        <motion.p
+          className="text-lg text-white font-serif italic"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}>
+          "{Quotes[currentQuote].quote}"
+        </motion.p>
+        <p className="text-sm text-gray-300 mt-2">
+          — {Quotes[currentQuote].movie}
+        </p>
+      </motion.div>
+    </motion.div>
   );
 };
 
