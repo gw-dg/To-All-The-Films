@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 import axios from "axios";
 import PropTypes from "prop-types";
+import { Toaster, toast } from "sonner";
 
 const LogMovieModal = ({
   isOpen,
@@ -62,9 +63,16 @@ const LogMovieModal = ({
       }
 
       onClose(true);
+      toast.success(`${movieTitle} added!`, {
+        position: "bottom-right",
+        duration: 3000,
+      });
     } catch (error) {
-      console.error("Error logging movie", error);
       onClose(false);
+      toast.error(`Failed to add ${movieTitle}. Please try again.`, {
+        position: "bottom-right",
+        duration: 3000,
+      });
     }
   };
 
@@ -92,69 +100,72 @@ const LogMovieModal = ({
   };
 
   return (
-    <div className={`modal ${isOpen ? "modal-open" : ""}`} role="dialog">
-      <div className="modal-box bg-base-300 text-base-content sm:max-w-md">
-        <button
-          className="btn btn-sm btn-circle absolute top-2 right-2 z-10"
-          onClick={() => onClose(null)}>
-          <FaTimes className="w-3 h-3" />
-        </button>
-        <div className="space-y-6 py-4">
-          {/* Movie Header */}
-          <div className="flex justify-start space-x-2 items-center pb-2">
-            <h3 className="text-xl font-bold font-montserrat truncate">
-              {movieTitle}
-            </h3>
-            <p className="text-lg font-montserrat text-base-content">
-              {movieYear}
-            </p>
-          </div>
+    <>
+      <Toaster />
+      <div className={`modal ${isOpen ? "modal-open" : ""}`} role="dialog">
+        <div className="modal-box bg-base-300 text-base-content sm:max-w-md">
+          <button
+            className="btn btn-sm btn-circle absolute top-2 right-2 z-10"
+            onClick={() => onClose(null)}>
+            <FaTimes className="w-3 h-3" />
+          </button>
+          <div className="space-y-6 py-4">
+            {/* Movie Header */}
+            <div className="flex justify-start space-x-2 items-center pb-2">
+              <h3 className="text-xl font-bold font-montserrat truncate">
+                {movieTitle}
+              </h3>
+              <p className="text-lg font-montserrat text-base-content">
+                {movieYear}
+              </p>
+            </div>
 
-          {/* Watched Toggle */}
-          <div className="flex flex-col gap-2">
-            {/* Date Input */}
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-mono ">Watched on:</label>
-              <input
-                type="date"
-                value={dateString}
-                onChange={(e) => setDateString(e.target.value)}
-                className="input input-bordered input-sm h-6 font-mono bg-base-200"
-                max={new Date().toISOString().split("T")[0]}
-              />
+            {/* Watched Toggle */}
+            <div className="flex flex-col gap-2">
+              {/* Date Input */}
+              <div className="flex items-center gap-2">
+                <label className="text-sm font-mono ">Watched on:</label>
+                <input
+                  type="date"
+                  value={dateString}
+                  onChange={(e) => setDateString(e.target.value)}
+                  className="input input-bordered input-sm h-6 font-mono bg-base-200"
+                  max={new Date().toISOString().split("T")[0]}
+                />
+              </div>
+            </div>
+
+            {/* Rating & Like Section */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1">{renderStars()}</div>
+              <button
+                className={`btn btn-ghost btn-square hover:bg-base-content/10 ${
+                  isLiked ? "text-primary-content" : "text-base-content"
+                }`}
+                onClick={() => setIsLiked(!isLiked)}
+                aria-label={
+                  isLiked ? "Remove from favorites" : "Add to favorites"
+                }>
+                {isLiked ? (
+                  <FaHeart className="w-6 h-6" />
+                ) : (
+                  <FaRegHeart className="w-6 h-6" />
+                )}
+              </button>
             </div>
           </div>
 
-          {/* Rating & Like Section */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1">{renderStars()}</div>
+          {/* Modal Actions */}
+          <div className="modal-action justify-end">
             <button
-              className={`btn btn-ghost btn-square hover:bg-base-content/10 ${
-                isLiked ? "text-primary-content" : "text-base-content"
-              }`}
-              onClick={() => setIsLiked(!isLiked)}
-              aria-label={
-                isLiked ? "Remove from favorites" : "Add to favorites"
-              }>
-              {isLiked ? (
-                <FaHeart className="w-6 h-6" />
-              ) : (
-                <FaRegHeart className="w-6 h-6" />
-              )}
+              className="btn btn-outline h-8 min-h-8 rounded-md"
+              onClick={handleSave}>
+              Save
             </button>
           </div>
         </div>
-
-        {/* Modal Actions */}
-        <div className="modal-action justify-end">
-          <button
-            className="btn btn-outline h-8 min-h-8 rounded-md"
-            onClick={handleSave}>
-            Save
-          </button>
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 

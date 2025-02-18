@@ -23,13 +23,16 @@ import { useParams } from "react-router-dom";
 import { AuthContext, ListContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import LogMovieModal from "./LogMovieModal";
-// import { Calendar } from "react-datetime-picker";
+import { Toaster, toast } from "sonner";
 
 const MovieDetail = () => {
   const { movieId } = useParams();
   const { isLoggedIn, loading, setLoading } = useContext(AuthContext);
-  const { titleDetail, setTitleDetail, director, setDirector, cast, setCast } =
-    useContext(ListContext);
+  const [titleDetail, setTitleDetail] = useState({});
+  const [director, setDirector] = useState("");
+  const [cast, setCast] = useState([{}]);
+  // const { titleDetail, setTitleDetail, director, setDirector, cast, setCast } =
+  //   useContext(ListContext);
 
   const navigate = useNavigate();
 
@@ -38,34 +41,44 @@ const MovieDetail = () => {
   };
 
   const favoriteMovie = async () => {
-    await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/favorite`,
-      {
-        titleId: movieId,
-        title: titleDetail?.title,
-        posterPath: titleDetail?.poster_path,
-      },
-      {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/favorite`,
+        {
+          titleId: movieId,
+          title: titleDetail?.title,
+          posterPath: titleDetail?.poster_path,
         },
-      }
-    );
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      toast.success(`${titleDetail?.title} added to favorites!`, {
+        position: "bottom-right",
+        duration: 3000,
+      });
+    } catch (error) {
+      toast.error(
+        `Failed to favorite ${titleDetail?.title}. Please try again.`,
+        {
+          position: "bottom-right",
+          duration: 3000,
+        }
+      );
+    }
   };
 
   useEffect(() => {
-    // console.log(movieId);
     if (!movieId) {
-      // console.log("movie id is undefined");
       return;
     }
     if (titleDetail?.id?.toString() === movieId?.toString()) {
-      // console.log("Movie details already fetched. Skipping...");
       return;
     }
     const fetchMovieDetails = async () => {
-      setLoading(true);
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/api/title/movie/${movieId}`,
@@ -101,6 +114,7 @@ const MovieDetail = () => {
 
   return (
     <>
+      <Toaster />
       {loading ? (
         <div className="flex items-center justify-center min-h-screen">
           <span className="loading loading-spinner loading-lg"></span>

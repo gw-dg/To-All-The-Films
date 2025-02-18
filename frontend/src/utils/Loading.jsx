@@ -184,7 +184,7 @@ const backdrops = [
   "https://image.tmdb.org/t/p/original/tG8QWDASd8rw0JxkDN2MDDWLEse.jpg",
   "https://image.tmdb.org/t/p/original/oZzFRRzuQS0FmSWSbwEvdAkcRBh.jpg",
   "https://image.tmdb.org/t/p/original/1AZqsVUJFBj2phRh9tJvpXDaG4E.jpg",
-  "https://image.tmdb.org/t/p/original/1C26hSKJnNAlfimNGFJ30l612cJ.jpg",
+  // "https://image.tmdb.org/t/p/original/1C26hSKJnNAlfimNGFJ30l612cJ.jpg",
 ];
 
 const LoadingPage = ({ onLoadComplete }) => {
