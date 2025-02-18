@@ -220,12 +220,10 @@ const LoadingPage = ({ onLoadComplete }) => {
         <div className="card-body items-center text-center">
           {/* Quote Section */}
           <div className="space-y-4">
-            <p className="text-lg font-serif italic animate-fade-in">
+            <p className="text-lg text-white font-serif italic animate-fade-in">
               "{Quotes[currentQuote].quote}"
             </p>
-            <p className="text-sm text-base-content/70">
-              — {Quotes[currentQuote].movie}
-            </p>
+            <p className="text-sm text-white">— {Quotes[currentQuote].movie}</p>
           </div>
 
           {/* Loading Dots */}
