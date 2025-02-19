@@ -49,7 +49,7 @@ export default function Card({ trendingMovieList }) {
                   {title.title}
                 </h2>
               </a>
-              <IoIosAdd className="flex-shrink-0 w-5 h-7 cursor-pointer hover:text-success" />
+              {/* <IoIosAdd className="flex-shrink-0 w-5 h-7 cursor-pointer hover:text-success" /> */}
             </div>
             <p className="text-sm opacity-70 -mt-1 break-words whitespace-normal flex-1 leading-tight">
               {title.release_date.split("-")[0]}

@@ -96,9 +96,9 @@ export default function TitleCard() {
                     {title.title}
                   </h2>
                 </a>
-                <button className="btn btn-sm btn-square">
+                {/* <button className="btn btn-sm btn-square">
                   <IoIosAdd className="w-5 h-5 " />
-                </button>
+                </button> */}
               </div>
               <p className="text-sm opacity-70 break-words whitespace-normal flex-1 leading-tight">
                 {title.release_date.split("-")[0]}

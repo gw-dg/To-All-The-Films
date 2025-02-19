@@ -63,16 +63,26 @@ router.post("/register", async (req, res) => {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const firebaseUID = decodedToken.uid;
 
-    const existingUser = await User.findOne({
-      $or: [{ firebaseUID }, { username }, { email: decodedToken.email }],
-    });
+    const existingUsername = await User.findOne({ username });
+    const existingEmail = await User.findOne({ email: decodedToken.email });
 
-    if (existingUser) {
+    if (existingUsername && existingEmail) {
+      return res.status(400).json({
+        message: "Email already registered.",
+      });
+    }
+
+    if (existingUsername) {
+      await admin.auth().deleteUser(firebaseUID);
       return res.status(400).json({
         message:
-          existingUser.username === username
-            ? "Username already exists"
-            : "User already exists",
+          "Username is already taken. Please choose a different username",
+      });
+    }
+
+    if (existingEmail) {
+      return res.status(400).json({
+        message: "Email is already registered.",
       });
     }
 
@@ -105,7 +115,13 @@ router.post("/register", async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Registration error:", error);
+    try {
+      const decodedToken = await admin.auth().verifyIdToken(idToken);
+      await admin.auth().deleteUser(decodedToken.uid);
+    } catch (deleteError) {
+      // console.error("Error cleaning up Firebase user:", deleteError);
+    }
+
     res.status(400).json({
       message: "Error registering user",
       error: error.message,

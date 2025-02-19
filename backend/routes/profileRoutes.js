@@ -6,19 +6,26 @@ const router = express.Router();
 
 router.get("/profile/:username", async (req, res) => {
   const { username } = req.params;
-  const sessionCookie = req.cookies.session;
+
   try {
+    const sessionCookie = req.cookies.session;
     const user = await User.findOne({ username });
 
     if (!user) return res.status(404).json({ error: "User not found" });
-    const decodedClaims = await admin
-      .auth()
-      .verifySessionCookie(sessionCookie, true);
-    const isItYourOwnId =
-      sessionCookie &&
-      decodedClaims.uid.toString() === user.firebaseUID.toString();
 
-    // console.log(decodedClaims.uid);
+    let isItYourOwnId = false;
+
+    if (sessionCookie) {
+      try {
+        const decodedClaims = await admin
+          .auth()
+          .verifySessionCookie(sessionCookie, true);
+        isItYourOwnId =
+          decodedClaims.uid.toString() === user.firebaseUID.toString();
+      } catch (err) {
+        console.error("Session verification failed:", err.message);
+      }
+    }
 
     res.json({
       user: {
@@ -48,7 +55,6 @@ router.get("/profile/:username", async (req, res) => {
           dateWatched: movie.dateWatched,
           posterPath: movie.posterPath,
           movieName: movie.movieName,
-          rating: movie.rating,
         })),
     });
   } catch (err) {
