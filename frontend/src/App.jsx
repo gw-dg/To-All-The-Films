@@ -58,7 +58,7 @@ function App() {
           Cookies.remove("session");
         }
       } catch (error) {
-        console.error("Session validation error:", error);
+        // console.error("Session validation error:", error);
         setIsLoggedIn(false);
         Cookies.remove("session");
       }

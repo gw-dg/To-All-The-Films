@@ -42,7 +42,7 @@ router.post("/login", async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Session creation failed:", error);
+    // console.error("Session creation failed:", error);
     res.status(401).json({
       message: "Session creation failed",
       error: error.message,
@@ -179,7 +179,7 @@ router.post("/login/auth", async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("OAuth login error:", error);
+    // console.error("OAuth login error:", error);
     res.status(401).json({
       message: "Authentication failed",
       error: error.message,
@@ -214,7 +214,7 @@ router.get("/session/validate", async (req, res) => {
 });
 
 router.post("/logout", (req, res) => {
-  console.log("logout initiated");
+  // console.log("logout initiated");
   res.clearCookie("session", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
