@@ -49,7 +49,7 @@ export default function SearchPage() {
 
   const handleEnter = (e) => {
     if (e.key === "Enter") {
-      navigate(`/search/${searchInput}`);
+      navigate(`/search/${searchInput}/1`);
     }
   };
 
