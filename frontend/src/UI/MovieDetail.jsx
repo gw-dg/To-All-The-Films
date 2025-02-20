@@ -28,8 +28,8 @@ import { Toaster, toast } from "sonner";
 
 const MovieDetail = () => {
   const { movieId } = useParams();
+  const [isFavorited, setIsFavorited] = useState(false);
   const { isLoggedIn, loading, setLoading } = useContext(AuthContext);
-  const [isFavorite, setIsFavorite] = useState(false);
   const { titleDetail, setTitleDetail, director, setDirector, cast, setCast } =
     useContext(ListContext);
 
@@ -41,27 +41,43 @@ const MovieDetail = () => {
 
   const favoriteMovie = async () => {
     try {
-      await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/favorite`,
-        {
-          titleId: movieId,
-          title: titleDetail?.title,
-          posterPath: titleDetail?.poster_path,
-        },
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
+      if (!isFavorited) {
+        await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/favorite`,
+          {
+            titleId: movieId,
+            title: titleDetail?.title,
+            posterPath: titleDetail?.poster_path,
           },
-        }
-      );
-      toast.success(`${titleDetail?.title} added to favorites!`, {
-        position: "bottom-right",
-        duration: 3000,
-      });
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        toast.success(`${titleDetail?.title} added to favorites!`, {
+          position: "bottom-right",
+          duration: 3000,
+        });
+      } else {
+        await axios.delete(
+          `${import.meta.env.VITE_BACKEND_URL}/favorite/${movieId}`,
+          {
+            withCredentials: true,
+          }
+        );
+        toast.success(`${titleDetail?.title} removed from favorites!`, {
+          position: "bottom-right",
+          duration: 3000,
+        });
+      }
+      setIsFavorited(!isFavorited);
     } catch (error) {
       toast.error(
-        `Failed to favorite ${titleDetail?.title}. Please try again.`,
+        `Failed to ${isFavorited ? "remove" : "add"} ${titleDetail?.title} ${
+          isFavorited ? "from" : "to"
+        } favorites. Please try again.`,
         {
           position: "bottom-right",
           duration: 3000,
@@ -69,6 +85,26 @@ const MovieDetail = () => {
       );
     }
   };
+
+  useEffect(() => {
+    const checkFavoriteStatus = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/favorite/${movieId}`,
+          {
+            withCredentials: true,
+          }
+        );
+        setIsFavorited(response.data.message === "Movie is Favorited");
+      } catch (error) {
+        setIsFavorited(false);
+      }
+    };
+
+    if (movieId) {
+      checkFavoriteStatus();
+    }
+  }, [movieId]);
 
   useEffect(() => {
     if (!movieId) {
@@ -197,17 +233,19 @@ const MovieDetail = () => {
                         {isLoggedIn && (
                           <>
                             <button
+                              className={`btn btn-sm ${
+                                isFavorited ? "btn-primary" : "btn-outline"
+                              }`}
+                              onClick={() => favoriteMovie()}>
+                              <FaHeart className="w-4 h-4" />
+                              Favorite
+                            </button>
+                            <button
                               className="btn btn-outline btn-sm "
                               onClick={() => setShowAddMovie(true)}
                               disabled={!titleDetail?.id}>
                               <FaPlus className="w-4 h-4" />
                               Add
-                            </button>
-                            <button
-                              className="btn btn-outline btn-sm"
-                              onClick={() => favoriteMovie()}>
-                              <FaHeart className="w-4 h-4" />
-                              Favorite
                             </button>
                           </>
                         )}

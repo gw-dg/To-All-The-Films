@@ -97,9 +97,9 @@ router.post("/favorite", async (req, res) => {
   }
 });
 
-router.delete("/favorite", async (req, res) => {
+router.delete("/favorite/:titleId", async (req, res) => {
   const sessionCookie = req.cookies.session;
-  const { titleId } = req.body;
+  const { titleId } = req.params;
 
   try {
     if (!titleId) {
@@ -136,6 +136,32 @@ router.delete("/favorite", async (req, res) => {
       name: removedMovie.movieName,
     });
   } catch (err) {
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", details: err.message });
+  }
+});
+
+router.get("/favorite/:titleId", async (req, res) => {
+  const sessionCookie = req.cookies.session;
+  const { titleId } = req.params;
+  try {
+    const decodedClaims = await admin
+      .auth()
+      .verifySessionCookie(sessionCookie, true);
+    const mongoUser = await User.findOne({ firebaseUID: decodedClaims.uid });
+
+    if (!mongoUser) {
+      return res.status(404).json({ message: "User not found in database" });
+    }
+
+    const movieIndex = mongoUser.favMovies.findIndex(
+      (movie) => movie.movieId.toString() === titleId.toString()
+    );
+    if (movieIndex === -1) {
+      return res.status(404).json({ message: "Movie is Not Favorited" });
+    } else return res.status(200).json({ message: "Movie is Favorited" });
+  } catch (error) {
     res
       .status(500)
       .json({ error: "Internal Server Error", details: err.message });
