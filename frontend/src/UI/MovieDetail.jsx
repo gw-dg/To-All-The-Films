@@ -29,6 +29,7 @@ import { Toaster, toast } from "sonner";
 const MovieDetail = () => {
   const { movieId } = useParams();
   const { isLoggedIn, loading, setLoading } = useContext(AuthContext);
+  const [isFavorite, setIsFavorite] = useState(false);
   const { titleDetail, setTitleDetail, director, setDirector, cast, setCast } =
     useContext(ListContext);
 

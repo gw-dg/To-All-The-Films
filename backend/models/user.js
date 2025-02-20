@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
-const preferrenceSchema = new mongoose.Schema({
+const preferenceSchema = new mongoose.Schema({
   favActorId: [
-    {
-      type: String,
-    },
-  ],
-  favActoressId: [
     {
       type: String,
     },
@@ -71,7 +66,14 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  preferrence: preferrenceSchema,
+  preference: {
+    type: preferenceSchema,
+    default: () => ({
+      favActorId: [],
+      favDirectorId: [],
+      favGenreId: [],
+    }),
+  },
   backgroundImage: {
     type: String,
     default: "https://artshortlist.com/files/48502313109648854.jpg",
