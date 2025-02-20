@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import LogMovieModal from "./LogMovieModal";
 // import { Calendar } from "react-datetime-picker";
 import { Toaster, toast } from "sonner";
+import ShareModal from "./Share";
 
 const MovieDetail = () => {
   const { movieId } = useParams();
@@ -32,6 +33,9 @@ const MovieDetail = () => {
   const { isLoggedIn, loading, setLoading } = useContext(AuthContext);
   const { titleDetail, setTitleDetail, director, setDirector, cast, setCast } =
     useContext(ListContext);
+  const [showTrailer, setShowTrailer] = useState(false);
+  const [showAddMovie, setShowAddMovie] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -143,9 +147,6 @@ const MovieDetail = () => {
     fetchMovieDetails();
   }, [movieId]);
 
-  const [showTrailer, setShowTrailer] = useState(false);
-  const [showAddMovie, setShowAddMovie] = useState(false);
-
   return (
     <>
       {loading ? (
@@ -253,7 +254,13 @@ const MovieDetail = () => {
                           <FaBookmark className="w-4 h-4" />
                           Add to Watchlist
                         </button>
-                        <button className="btn btn-outline btn-sm">
+                        <button
+                          className="btn btn-outline btn-sm"
+                          onClick={() => {
+                            console.log("clicked");
+                            setShowShareModal(true);
+                          }}
+                          disabled={!titleDetail?.id}>
                           <FaShareAlt className="w-4 h-4" />
                           Share
                         </button>
@@ -403,6 +410,15 @@ const MovieDetail = () => {
                 onClose={() => setShowAddMovie(false)}
                 movieTitle={`${titleDetail?.title}`}
                 movieYear={`${titleDetail?.release_date.split("-")[0]}`}
+              />
+            )}
+
+            {showShareModal && (
+              <ShareModal
+                isOpen={showShareModal}
+                onClose={() => setShowShareModal(false)}
+                movieTitle={`${titleDetail?.title}`}
+                movieId={titleDetail?.id}
               />
             )}
           </div>

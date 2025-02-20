@@ -164,7 +164,7 @@ router.get("/favorite/:titleId", async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Internal Server Error", details: err.message });
+      .json({ error: "Internal Server Error", details: error.message });
   }
 });
 
