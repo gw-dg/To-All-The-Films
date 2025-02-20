@@ -12,7 +12,7 @@ const ShareModal = ({ isOpen, onClose, movieTitle, movieId }) => {
   console.log("isOpen in ShareModal:", isOpen);
 
   const [copied, setCopied] = useState(false);
-  const shareUrl = `${window.location.origin}/movie/${movieId}`;
+  const shareUrl = `${window.location.origin}/title/${movieId}`;
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(shareUrl);
