@@ -1,19 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { FaSearch } from "react-icons/fa";
 import { Toaster, toast } from "sonner";
 import axios from "axios";
+import { AuthContext } from "../App";
+import { useNavigate } from "react-router-dom";
 
 export default function Preferences() {
   const [genreName, setGenreName] = useState("");
   const [directorName, setDirectorName] = useState("");
   const [actorName, setActorName] = useState("");
+  const { isLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSaveDirector = async () => {
     // console.log(directorName);
+    if (!isLoggedIn) {
+      navigate(`/login`);
+      return;
+    }
     if (!directorName.trim()) {
       toast.error("Director name cannot be empty!");
       return;
     }
+
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/add/director`,
@@ -42,10 +51,16 @@ export default function Preferences() {
 
   const handleSaveActor = async () => {
     // console.log(actorName);
+    if (!isLoggedIn) {
+      navigate(`/login`);
+      return;
+    }
+
     if (!actorName.trim()) {
       toast.error("Actor name cannot be empty!");
       return;
     }
+
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/add/actor`,
@@ -74,6 +89,11 @@ export default function Preferences() {
 
   const handleSaveGenre = async () => {
     // console.log(actorName);
+    if (!isLoggedIn) {
+      navigate(`/login`);
+      return;
+    }
+
     if (!genreName.trim()) {
       toast.error("Genre cannot be empty!");
       return;

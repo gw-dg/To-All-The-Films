@@ -110,14 +110,16 @@ export default function Layout({ children }) {
                 <a>Home</a>
               </button>
             </li>
-            <li>
-              <button
-                className="text-base-content"
-                onClick={() => handleNavigation(`/profile/${username}`)}>
-                <LuUser className="w-5 h-5" />
-                <a>Profile</a>
-              </button>
-            </li>
+            {isLoggedIn && (
+              <li>
+                <button
+                  className="text-base-content"
+                  onClick={() => handleNavigation(`/profile/${username}`)}>
+                  <LuUser className="w-5 h-5" />
+                  <a>Profile</a>
+                </button>
+              </li>
+            )}
             <li>
               <button
                 className="text-base-content"
