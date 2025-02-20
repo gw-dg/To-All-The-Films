@@ -5,7 +5,7 @@ Currently in Development Phase.
 **Roadmap :**
  - [x] Basic Frontend
  - [ ] Movie Recommendation Engine
- - [ ] Adding Toasts
+ - [x] Adding Toasts
  - [ ] Refactoring React Code
  - [ ] Caching DB
  - [ ] Mashup Lists with friends
