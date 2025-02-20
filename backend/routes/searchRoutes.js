@@ -5,11 +5,11 @@ const router = express.Router();
 
 const api_key = process.env.api_key;
 
-router.get("/search/:title", async (req, res) => {
-  const { title } = req.params;
+router.get("/search/:title/:page", async (req, res) => {
+  const { title, page } = req.params;
   try {
     const response = await axios.get(
-      `https://api.themoviedb.org/3/search/movie?query=${title}&include_adult=false&language=en-US&page=1`,
+      `https://api.themoviedb.org/3/search/movie?query=${title}&include_adult=false&language=en-US&page=${page}`,
       {
         headers: {
           accept: "application/json",

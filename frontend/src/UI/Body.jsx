@@ -48,8 +48,8 @@ export default function Body() {
 
   const handleEnter = (e) => {
     if (e.key === "Enter") {
-      handleNavigation(`/search/${searchQuery.trim()}`);
-      console.log(searchQuery);
+      handleNavigation(`/search/${searchQuery.trim()}/1`);
+      // console.log(searchQuery);
     }
   };
 

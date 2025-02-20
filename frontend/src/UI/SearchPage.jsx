@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Pagination from "./Pagination";
 
 export default function SearchPage() {
   const navigate = useNavigate();
@@ -9,15 +10,20 @@ export default function SearchPage() {
     navigate(`/title/${id}`);
   };
 
-  const { searchQuery } = useParams();
+  const { searchQuery, page } = useParams();
   const [searchResults, setSearchResults] = useState({});
   const [searchInput, setSeachInput] = useState("");
+  const [totalPages, setTotalPages] = useState(1);
+  const [currPage, setCurrPage] = useState(Number(page) || 1);
+
   useEffect(() => {
     // if (searchResults?.results) return;
     const fetchSearchResults = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/search/${searchQuery}`,
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/search/${searchQuery}/${currPage}`,
           {
             headers: {
               Accept: "application/json",
@@ -26,13 +32,16 @@ export default function SearchPage() {
           }
         );
 
-        if (searchQuery) setSearchResults(response.data);
+        if (searchQuery) {
+          setSearchResults(response.data);
+          setTotalPages(response.data.total_pages);
+        }
       } catch (error) {
-        console.error("Error:", error.message);
+        // console.error("Error:", error.message);
       }
     };
     fetchSearchResults();
-  }, [searchQuery]);
+  }, [searchQuery, currPage]);
 
   const handleInputChange = (e) => {
     setSeachInput(e.target.value);
@@ -45,15 +54,16 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="flex flex-col items-center space-y-4">
-      <div className="max-w-5xl mt-4 mb-4 mx-auto w-full">
+    <div className="flex flex-col items-center w-full">
+      {/* Search Input */}
+      <div className="max-w-5xl w-full mt-4 mb-4">
         <label className="input input-bordered flex items-center gap-2">
           <input
             type="text"
             className="grow font-montserrat"
             value={searchInput}
             placeholder="Search"
-            onChange={(e) => handleInputChange(e)}
+            onChange={handleInputChange}
             onKeyDown={handleEnter}
           />
           <svg
@@ -69,21 +79,25 @@ export default function SearchPage() {
           </svg>
         </label>
       </div>
-      <div className="flex flex-col justify-center items-start max-w-5xl space-y-4">
+
+      {/* Search Results Container */}
+      <div className="max-w-5xl w-full flex flex-col">
         {!searchResults?.results?.length ? (
-          <div className="font-montserrat">
+          <div className="text-center text-gray-500 font-montserrat">
             No Results Found for {searchQuery}
           </div>
         ) : (
           <>
-            <div className="font-montserrat">
+            <div className="font-montserrat mb-2">
               Search Results for {searchQuery}
             </div>
-            <div className="flex-1 max-h-96 space-y-4">
+
+            <div className="grid gap-4">
               {searchResults?.results?.map((title) => (
                 <div
                   key={title.id}
-                  className="card card-side  relative grid grid-cols-[150px_1fr]">
+                  className="card card-side grid grid-cols-[150px_1fr]">
+                  {/* Movie Poster */}
                   <figure className="flex items-center justify-center">
                     <img
                       src={`https://image.tmdb.org/t/p/w500${title.poster_path}`}
@@ -92,7 +106,8 @@ export default function SearchPage() {
                       onClick={() => handleClick(title.id)}
                     />
                   </figure>
-                  {/* Content section */}
+
+                  {/* Movie Info */}
                   <div className="card-body py-4 pl-0">
                     <div>
                       <div className="flex items-center gap-2">
@@ -102,7 +117,7 @@ export default function SearchPage() {
                           </h2>
                         </a>
                       </div>
-                      <p className="text-sm opacity-70 break-words whitespace-normal flex-1 leading-tight">
+                      <p className="text-sm opacity-70">
                         {title.release_date.split("-")[0]}
                       </p>
                       <p className="mt-4 text-base-content/70 text-sm line-clamp-3">
@@ -116,6 +131,17 @@ export default function SearchPage() {
           </>
         )}
       </div>
+
+      {totalPages > 1 && (
+        <div className="flex justify-center mt-6 mb-6 w-full">
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currPage}
+            onPageChange={setCurrPage}
+            title={searchQuery}
+          />
+        </div>
+      )}
     </div>
   );
 }

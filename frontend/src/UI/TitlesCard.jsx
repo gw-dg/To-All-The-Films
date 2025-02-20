@@ -15,7 +15,8 @@ export default function TitleCard() {
   };
 
   const { setLoading } = useContext(AuthContext);
-  const { andOr, selectedCards } = useContext(MiscContext);
+  const { andOr, selectedCards, currPage, setTotalPages } =
+    useContext(MiscContext);
   useEffect(() => {
     // if (particularGenreMovieList?.results) return;
 
@@ -28,7 +29,7 @@ export default function TitleCard() {
 
         const url = `${
           import.meta.env.VITE_BACKEND_URL
-        }/api/discover/movie?page=1&genreId=${selectedIds}&page=1`;
+        }/api/discover/movie?page=${currPage}&genreId=${selectedIds}&page=1`;
 
         const response = await axios.get(url, {
           headers: {
@@ -38,8 +39,9 @@ export default function TitleCard() {
         });
         // console.log(url);
         setParticularGenreMovieList(response.data);
+        setTotalPages(response.data.total_pages);
       } catch (error) {
-        console.error("Error:", error.message);
+        // console.error("Error:", error.message);
       } finally {
         // setLoading(false);
       }
@@ -47,7 +49,7 @@ export default function TitleCard() {
     fetchTitles();
 
     return () => setParticularGenreMovieList(null);
-  }, [selectedCards, andOr]);
+  }, [selectedCards, andOr, currPage]);
   if (
     !particularGenreMovieList?.results ||
     particularGenreMovieList.results.length === 0

@@ -2,10 +2,13 @@ import React, { useState, useContext } from "react";
 import GenreCard from "./GenreCard";
 import TitleCard from "./TitlesCard";
 import { MiscContext } from "../App";
+import Pagination from "./Pagination";
+import PaginationTitleCard from "./PaginationTitleCard";
 
 const TabContent = () => {
   const [activeTab, setActiveTab] = useState("mood");
-  const { andOr, setAndOr } = useContext(MiscContext);
+  const { andOr, setAndOr, currPage, setCurrPage, totalPages } =
+    useContext(MiscContext);
 
   const handleToggle = (e) => {
     if (e.target.checked) setAndOr("or");
@@ -61,8 +64,15 @@ const TabContent = () => {
                 <label className="text-sm">OR</label>
               </div>
             </div>
-            <GenreCard />
-            <TitleCard />
+            <div className="flex flex-col justify-center items-center gap-y-2">
+              <GenreCard />
+              <TitleCard />
+              <PaginationTitleCard
+                totalPages={totalPages}
+                currentPage={currPage}
+                onPageChange={setCurrPage}
+              />
+            </div>
           </div>
         )}
       </div>

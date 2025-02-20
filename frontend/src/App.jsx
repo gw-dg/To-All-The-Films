@@ -36,6 +36,8 @@ function App() {
   const [director, setDirector] = useState("");
   const [cast, setCast] = useState([{}]);
   const [username, setUsername] = useState("");
+  const [currPage, setCurrPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const location = useLocation();
 
   useEffect(() => {
@@ -110,8 +112,12 @@ function App() {
       setAndOr,
       selectedCards,
       setSelectedCards,
+      currPage,
+      setCurrPage,
+      totalPages,
+      setTotalPages,
     }),
-    [andOr, selectedCards]
+    [andOr, selectedCards, currPage, totalPages]
   );
 
   return (
@@ -134,7 +140,10 @@ function App() {
                 <Route path="/preferences" element={<Preferences />} />
                 <Route path="/title/:movieId" element={<MovieDetail />} />
                 <Route path="/profile/:username" element={<Profile />} />
-                <Route path="/search/:searchQuery" element={<SearchPage />} />
+                <Route
+                  path="/search/:searchQuery/:page"
+                  element={<SearchPage />}
+                />
                 <Route path="*" element={<Navigate to="/home" replace />} />
               </Routes>
             </Layout>
