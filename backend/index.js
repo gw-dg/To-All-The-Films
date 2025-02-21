@@ -39,7 +39,7 @@ const StartServer = async () => {
 
       await fs.promises.rm(filePath, { recursive: true, force: true });
     }
-    console.log("Ma chuda lvde :lotpot: ");
+    console.log(":sadge:");
     console.log("Backend server is running on port:",
       PORT
     );
