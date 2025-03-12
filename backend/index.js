@@ -9,6 +9,7 @@ const loginRoutes = require("./routes/loginRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const addTitleRoutes = require("./routes/addTitleRoutes");
 const searchRoutes = require("./routes/searchRoutes");
+const chatRoutes = require("./routes/genAIRoutes");
 require("dotenv").config();
 
 const app = express();
@@ -38,6 +39,7 @@ app.use("/", loginRoutes);
 app.use("/", profileRoutes);
 app.use("/", addTitleRoutes);
 app.use("/", searchRoutes);
+app.use("/", chatRoutes);
 
 connectDB().then(() => {
   app.listen(PORT, () => {});

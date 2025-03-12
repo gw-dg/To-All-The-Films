@@ -6,6 +6,7 @@ import { SlHome, SlSettings } from "react-icons/sl";
 import { CgLogIn } from "react-icons/cg";
 import { GoTrophy } from "react-icons/go";
 import { LuUser } from "react-icons/lu";
+import { HiOutlineSparkles } from "react-icons/hi2";
 import ThemeController from "./ThemeController";
 import { AuthContext } from "../App";
 
@@ -123,9 +124,19 @@ export default function Layout({ children }) {
             <li>
               <button
                 className="text-base-content"
-                onClick={() => handleNavigation("/credits")}>
+                onClick={() => handleNavigation("/chat")}>
                 <GoTrophy className="w-5 h-5" />
                 <a>Credits</a>
+              </button>
+            </li>
+            <li>
+              <button
+                className="text-base-content"
+                onClick={() =>
+                  handleNavigation(isLoggedIn ? "/chat" : "/login")
+                }>
+                <HiOutlineSparkles className="w-5 h-5" />
+                <a>Chat With AI</a>
               </button>
             </li>
             <li>
