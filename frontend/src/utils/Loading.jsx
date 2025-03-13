@@ -177,7 +177,7 @@ const Quotes = [
   { quote: "He's so fluffy, I'm gonna die!", movie: "Despicable Me (2010)" },
 ];
 
-const backdrops = [
+const backdrops_desktop = [
   "https://image.tmdb.org/t/p/original/88nIQnyDyYfEpR7s9hwbfhJuxK9.jpg",
   //   "https://image.tmdb.org/t/p/original/txHiVwtNn4QjlEKQ7wVfFbnI8no.jpg",
   "https://image.tmdb.org/t/p/original/rTOLPumsQpUTGPFFonBzPv7JF1y.jpg",
@@ -187,17 +187,57 @@ const backdrops = [
   // "https://image.tmdb.org/t/p/original/1C26hSKJnNAlfimNGFJ30l612cJ.jpg",
 ];
 
+const backdrops_mobile = [
+  "https://scontent.fdel76-1.fna.fbcdn.net/v/t39.30808-6/467441184_968194265346692_7199079699213183300_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=127cfc&_nc_ohc=U91sJkkg9jAQ7kNvgHLjw_d&_nc_oc=Adj0sRoGJWZcjUjfbH3k33gNb01ObmApepn__dzVl43vQjBEpTNbeuiHl8v_MNkLLN0&_nc_zt=23&_nc_ht=scontent.fdel76-1.fna&_nc_gid=AnLZMsHEMA3fHcWtx6KrmjA&oh=00_AYEn33JFGq7UrSS8WniP1KS3_RdGUYHCym3khHb4y1uqVg&oe=67D86833",
+  "https://i.ibb.co/Y6Pm940/0da0c0cd6020ef87ad136169091c2355.jpg",
+  "https://i.ibb.co/XN9g692/5977ba5cb91e56c777016bf714a9af23.jpg",
+  "https://i.ibb.co/LhNFWVRp/e01a4b786dd3a6463f0689cb0d3fed98.jpg",
+  "https://i.ibb.co/KpnMqC5d/840491f64bb404849e276cdb35358c0f.jpg",
+  "https://i.ibb.co/dJcTJLht/34697b8ca1b4ca2020eb010e29fa9023.jpg",
+];
 const LoadingPage = ({ onLoadComplete }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [backdrop, setBackdrop] = useState("");
 
   const currentQuote = useMemo(
     () => Math.floor(Math.random() * Quotes.length),
     []
   );
-  const currentBackdrop = useMemo(
-    () => Math.floor(Math.random() * backdrops.length),
-    []
-  );
+
+  // Function to determine the backdrop based on screen size
+  const getBackdrop = () => {
+    const width = window.innerWidth;
+
+    if (width < 768) {
+      // Mobile
+      return backdrops_mobile[
+        Math.floor(Math.random() * backdrops_mobile.length)
+      ];
+    } else if (width >= 768 && width < 1024) {
+      // iPad
+      return backdrops_mobile[
+        Math.floor(Math.random() * backdrops_mobile.length)
+      ];
+    } else {
+      // Desktop
+      return backdrops_desktop[
+        Math.floor(Math.random() * backdrops_desktop.length)
+      ];
+    }
+  };
+
+  useEffect(() => {
+    // Set the initial backdrop
+    setBackdrop(getBackdrop());
+
+    // Update backdrop on window resize
+    const handleResize = () => {
+      setBackdrop(getBackdrop());
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -217,11 +257,8 @@ const LoadingPage = ({ onLoadComplete }) => {
       exit={{ opacity: 0 }}
       className="min-h-screen flex items-center justify-center bg-cover bg-center relative"
       style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${backdrops[currentBackdrop]})`,
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(${backdrop})`,
       }}>
-      {/* Blurred Overlay */}
-      {/* <div className="absolute inset-0 backdrop-blur-md"></div> */}
-
       {/* Card Container */}
       <motion.div
         initial={{ y: 30, opacity: 0 }}

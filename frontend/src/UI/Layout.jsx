@@ -124,7 +124,7 @@ export default function Layout({ children }) {
             <li>
               <button
                 className="text-base-content"
-                onClick={() => handleNavigation("/chat")}>
+                onClick={() => handleNavigation("/credits")}>
                 <GoTrophy className="w-5 h-5" />
                 <a>Credits</a>
               </button>
