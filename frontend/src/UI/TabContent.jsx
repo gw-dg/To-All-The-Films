@@ -40,7 +40,7 @@ const TabContent = () => {
       </div>
 
       {/* Content area */}
-      <div className="mt-6 h-full">
+      <div className="mt-6">
         {activeTab === "taste" && (
           <div className="text-center">
             <p>Based on your taste content goes here</p>
@@ -48,7 +48,7 @@ const TabContent = () => {
         )}
 
         {activeTab === "mood" && (
-          <div className="h-full">
+          <div>
             <div className="flex flex-row justify-between">
               <h2 className="text-sm text-start ml-4">
                 What would you like to watch today?
