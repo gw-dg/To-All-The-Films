@@ -70,31 +70,31 @@ export default function TitleCard() {
       </div>
     );
   return (
-    <div className="flex-1 max-h-96 bg-base-300 overflow-y-scroll space-y-4">
+    <div className="flex-1 max-h-96 bg-base-300 overflow-y-scroll space-y-2 md:space-y-4">
       {particularGenreMovieList.results.map((title) => (
         <div
           key={title.id}
-          className="card card-side bg-base-200 relative grid grid-cols-[150px_1fr]">
+          className="card card-side bg-base-200 relative grid grid-cols-[100px_1fr] md:grid-cols-[150px_1fr]">
           <figure className="flex items-center justify-center">
             <img
               src={`https://image.tmdb.org/t/p/w500${title.poster_path}`}
               alt={title.title}
-              className="h-40 rounded-lg mt-2 mb-2 w-28 object-cover cursor-pointer"
+              className="h-32 md:h-40 rounded-lg mt-2 mb-2 w-20 md:w-28 object-cover cursor-pointer"
               onClick={() => handleClick(title.id)}
             />
           </figure>
           {/* Rating Box */}
-          <div className="bg-base-300 absolute top-4 right-4 px-3 py-1 rounded-lg">
-            <span className="text-lg font-semibold">
+          <div className="bg-base-300 absolute top-2 md:top-4 right-2 md:right-4 px-2 md:px-3 py-1 rounded-lg">
+            <span className="text-sm md:text-lg font-semibold">
               {title.vote_average.toFixed(1)}
             </span>
           </div>
           {/* Content section */}
-          <div className="card-body py-4 pl-0">
+          <div className="card-body py-2 md:py-4 pl-0">
             <div>
               <div className="flex items-center gap-2">
                 <a onClick={() => handleClick(title.id)}>
-                  <h2 className="card-title text-xl cursor-pointer hover:text-secondary">
+                  <h2 className="card-title text-base md:text-xl cursor-pointer hover:text-secondary">
                     {title.title}
                   </h2>
                 </a>
@@ -102,10 +102,10 @@ export default function TitleCard() {
                   <IoIosAdd className="w-5 h-5 " />
                 </button> */}
               </div>
-              <p className="text-sm opacity-70 break-words whitespace-normal flex-1 leading-tight">
+              <p className="text-xs md:text-sm opacity-70 break-words whitespace-normal flex-1 leading-tight">
                 {title.release_date.split("-")[0]}
               </p>
-              <p className="mt-4 text-base-content/70 text-sm line-clamp-3">
+              <p className="mt-2 md:mt-4 text-base-content/70 text-xs md:text-sm line-clamp-2 md:line-clamp-3">
                 {title.overview}
               </p>
             </div>

@@ -22,13 +22,13 @@ export default function Card() {
   // }, [selectedCards]);
 
   return (
-    <div className="carousel carousel-center rounded-box space-x-1 p-4 overflow-x-auto max-w-2xl">
+    <div className="carousel carousel-center rounded-box space-x-1 p-2 md:p-4 overflow-x-auto max-w-full md:w-11/12 lg:max-w-2xl">
       {genreMap.map((genre) => (
         <div
           key={genre.id}
-          className="carousel-item  card w-56 bg-base-300 rounded-md shadow-md cursor-pointer relative"
+          className="carousel-item card w-36 md:w-56 bg-base-300 rounded-md shadow-md cursor-pointer relative"
           onClick={() => toggleSelected(genre.id)}>
-          <figure className="relative h-24">
+          <figure className="relative h-16 md:h-24">
             <img
               src={`${genre.backdrop}`}
               alt={genre.name}
@@ -37,10 +37,10 @@ export default function Card() {
             <div className="absolute inset-0 rounded-lg flex items-center justify-center gap-2">
               {selectedCards[genre.id] && (
                 <div className="text-neutral-content">
-                  <FaCheckCircle className="w-5 h-5" />
+                  <FaCheckCircle className="w-4 md:w-5 h-4 md:h-5" />
                 </div>
               )}
-              <span className="text-neutral-content font-bold text-xl">
+              <span className="text-neutral-content font-bold text-sm md:text-xl">
                 {genre.name}
               </span>
             </div>

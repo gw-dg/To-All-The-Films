@@ -85,7 +85,7 @@ export default function Layout({ children }) {
             </div>
             <div className="flex-1 justify-center items-center">
               <a
-                className="text-5xl font-italianno tracking-wider pt-2 hover:cursor-pointer"
+                className="text-3xl sm:text-4xl md:text-5xl font-italianno tracking-wider pt-2 hover:cursor-pointer truncate"
                 onClick={() => handleNavigation("/home")}>
                 To All The Films
               </a>

@@ -40,7 +40,7 @@ const TabContent = () => {
       </div>
 
       {/* Content area */}
-      <div className="mt-6">
+      <div className="mt-6 h-full">
         {activeTab === "taste" && (
           <div className="text-center">
             <p>Based on your taste content goes here</p>
@@ -48,7 +48,7 @@ const TabContent = () => {
         )}
 
         {activeTab === "mood" && (
-          <div>
+          <div className="h-full">
             <div className="flex flex-row justify-between">
               <h2 className="text-sm text-start ml-4">
                 What would you like to watch today?
@@ -64,7 +64,7 @@ const TabContent = () => {
                 <label className="text-sm">OR</label>
               </div>
             </div>
-            <div className="flex flex-col justify-center items-center gap-y-2">
+            <div className="flex flex-col flex-grow flex-1 justify-center items-center gap-y-2 w-full">
               <GenreCard />
               <TitleCard />
               <PaginationTitleCard
