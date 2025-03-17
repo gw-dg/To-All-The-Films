@@ -86,7 +86,7 @@ export default function Body() {
         </div>
 
         <div className="mt-5 flex flex-col">
-          <Card trendingMovieList={trendingMovieList} />
+          <Card trendingMovieList={trendingMovieList} number={6} />
         </div>
         {/* Second carousel */}
         <div className="flex flex-col"></div>

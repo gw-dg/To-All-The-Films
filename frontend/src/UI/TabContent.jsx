@@ -4,6 +4,7 @@ import TitleCard from "./TitlesCard";
 import { MiscContext } from "../App";
 import Pagination from "./Pagination";
 import PaginationTitleCard from "./PaginationTitleCard";
+import MovieRecommendations from "./MovieRecommendations";
 
 const TabContent = () => {
   const [activeTab, setActiveTab] = useState("mood");
@@ -26,7 +27,7 @@ const TabContent = () => {
               ? "border-b border-primary text-base-content" // For active tab
               : "text-base-content/50" // For inactive tab - removed border
           }`}>
-          Based on my taste
+          Based on your taste
         </button>
         <button
           onClick={() => setActiveTab("mood")}
@@ -35,15 +36,19 @@ const TabContent = () => {
               ? "border-b border-primary text-base-content"
               : "text-base-content/50"
           }`}>
-          Based on my mood
+          Based on your mood
         </button>
       </div>
 
       {/* Content area */}
       <div className="mt-6">
         {activeTab === "taste" && (
-          <div className="text-center">
-            <p>Based on your taste content goes here</p>
+          <div className="font-lato text-center flex flex-col items-center justify-between">
+            <p className="text-sm text-start p-4">
+              Curated just for you—discover movies inspired by your favorites
+              and top-rated picks!
+            </p>
+            <MovieRecommendations />
           </div>
         )}
 

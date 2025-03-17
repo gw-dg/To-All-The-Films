@@ -36,7 +36,7 @@ app.get("/", (request, response) => {
 app.use("/api", trendingRoutes);
 app.use("/api", genreRoutes);
 app.use("/api", titleDetailRoutes);
-app.use("/", recommendationRoutes);
+app.use("/api", recommendationRoutes);
 app.use("/", loginRoutes);
 app.use("/", profileRoutes);
 app.use("/", addTitleRoutes);

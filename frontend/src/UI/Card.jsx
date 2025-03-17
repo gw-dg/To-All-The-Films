@@ -3,7 +3,7 @@ import { IoIosAdd } from "react-icons/io";
 import { ListContext, AuthContext } from "../App";
 import { useNavigate } from "react-router-dom";
 
-export default function Card({ trendingMovieList }) {
+export default function Card({ trendingMovieList, number }) {
   // const { trendingMovieList, trendingTvList } = useContext(ListContext);
   // const { setLoading } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ export default function Card({ trendingMovieList }) {
 
   return (
     <div className="mx-auto grid grid-cols-3 gap-x-3 gap-y-4 md:gap-x-12 md:gap-y-4 p-2 overflow-y-auto max-h-screen">
-      {trendingMovieList.results.slice(0, 6).map((title) => (
+      {trendingMovieList.results.slice(0, number).map((title) => (
         <div key={title.id} className="flex flex-col">
           {/* <div className="card bg-base-300 h-48 w-44  "></div> */}
           <figure className="p-2 ">
