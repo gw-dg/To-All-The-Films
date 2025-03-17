@@ -10,6 +10,7 @@ const profileRoutes = require("./routes/profileRoutes");
 const addTitleRoutes = require("./routes/addTitleRoutes");
 const searchRoutes = require("./routes/searchRoutes");
 const chatRoutes = require("./routes/genAIRoutes");
+const recommendationRoutes = require("./routes/getReccRoutes");
 require("dotenv").config();
 
 const app = express();
@@ -35,6 +36,7 @@ app.get("/", (request, response) => {
 app.use("/api", trendingRoutes);
 app.use("/api", genreRoutes);
 app.use("/api", titleDetailRoutes);
+app.use("/", recommendationRoutes);
 app.use("/", loginRoutes);
 app.use("/", profileRoutes);
 app.use("/", addTitleRoutes);
