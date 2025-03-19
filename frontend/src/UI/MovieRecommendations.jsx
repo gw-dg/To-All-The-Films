@@ -61,16 +61,27 @@ export default function MovieRecommendations() {
           <div key={title.movieId} className="flex flex-col">
             {/* <div className="card bg-base-300 h-48 w-44  "></div> */}
             <figure className="p-2 ">
-              <img
-                src={`https://image.tmdb.org/t/p/w400${title.metadata.backdrop_path}`}
-                className="rounded-lg h-32 md:h-40 w-64 md:w-80 object-cover cursor-pointer"
-                alt={title.metadata.title}
-                onClick={() => handleClick(title.movieId)}
-              />
+              <a
+                href={`/title/${title.movieId}`}
+                target="_blank"
+                rel="noopener noreferrer">
+                <img
+                  src={`https://image.tmdb.org/t/p/w400${title.metadata.backdrop_path}`}
+                  className="rounded-lg h-32 md:h-40 w-64 md:w-80 object-cover cursor-pointer"
+                  alt={title.metadata.title}
+                  onClick={(e) => {
+                    handleClick(title.movieId);
+                  }}
+                />
+              </a>
             </figure>
             <div className="card-body p-2 -mt-3 w-40 md:w-52 text-left">
               <div className="flex items-center justify-between">
-                <a onClick={() => handleClick(title.movieId)}>
+                <a
+                  href={`/title/${title.movieId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => handleClick(title.movieId)}>
                   <h2 className="card-title text-sm md:text-sm break-keep font-sans whitespace-pre-line leading-tight cursor-pointer hover:text-primary">
                     {title.metadata.title
                       .split(" ")

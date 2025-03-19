@@ -35,16 +35,25 @@ export default function Card({ trendingMovieList, number }) {
         <div key={title.id} className="flex flex-col">
           {/* <div className="card bg-base-300 h-48 w-44  "></div> */}
           <figure className="p-2 ">
-            <img
-              src={`https://image.tmdb.org/t/p/w400${title.poster_path}`}
-              className="rounded-lg h-40 md:h-48 w-28 md:w-36 object-cover cursor-pointer"
-              alt={title.title}
-              onClick={() => handleClick(title.id)}
-            />
+            <a
+              href={`/title/${title.id}`}
+              target="_blank"
+              rel="noopener noreferrer">
+              <img
+                src={`https://image.tmdb.org/t/p/w400${title.poster_path}`}
+                className="rounded-lg h-40 md:h-48 w-28 md:w-36 object-cover cursor-pointer"
+                alt={title.title}
+                onClick={() => handleClick(title.id)}
+              />
+            </a>
           </figure>
           <div className="card-body p-2 -mt-3 w-28 md:w-36 text-left md:text-left">
             <div className="flex items-center justify-between">
-              <a onClick={() => handleClick(title.id)}>
+              <a
+                href={`/title/${title.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => handleClick(title.id)}>
                 <h2 className="card-title text-sm md:text-base  break-words whitespace-normal flex-1 leading-tight cursor-pointer hover:text-primary">
                   {title.title}
                 </h2>

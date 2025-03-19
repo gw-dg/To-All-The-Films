@@ -76,12 +76,17 @@ export default function TitleCard() {
           key={title.id}
           className="card card-side bg-base-200 relative grid grid-cols-[100px_1fr] md:grid-cols-[150px_1fr]">
           <figure className="flex items-center justify-center">
-            <img
-              src={`https://image.tmdb.org/t/p/w500${title.poster_path}`}
-              alt={title.title}
-              className="h-32 md:h-40 rounded-lg mt-2 mb-2 w-20 md:w-28 object-cover cursor-pointer"
-              onClick={() => handleClick(title.id)}
-            />
+            <a
+              href={`/title/${title.id}`}
+              target="_blank"
+              rel="noopener noreferrer">
+              <img
+                src={`https://image.tmdb.org/t/p/w500${title.poster_path}`}
+                alt={title.title}
+                className="h-32 md:h-40 rounded-lg mt-2 mb-2 w-20 md:w-28 object-cover cursor-pointer"
+                onClick={() => handleClick(title.id)}
+              />
+            </a>
           </figure>
           {/* Rating Box */}
           <div className="bg-base-300 absolute top-2 md:top-4 right-2 md:right-4 px-2 md:px-3 py-1 rounded-lg">
@@ -93,7 +98,11 @@ export default function TitleCard() {
           <div className="card-body py-2 md:py-4 pl-0">
             <div>
               <div className="flex items-center gap-2">
-                <a onClick={() => handleClick(title.id)}>
+                <a
+                  href={`/title/${title.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => handleClick(title.id)}>
                   <h2 className="card-title text-base md:text-xl cursor-pointer hover:text-secondary">
                     {title.title}
                   </h2>

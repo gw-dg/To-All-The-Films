@@ -359,19 +359,29 @@ const MovieDetail = () => {
                         key={title.id}
                         className="carousel-item flex flex-col text-start space-y-2 w-48 sm:w-56 md:w-64">
                         <div className="aspect-video w-full rounded-lg overflow-hidden shadow-md">
-                          <img
-                            src={
-                              title.backdrop_path
-                                ? `https://image.tmdb.org/t/p/w500${title.backdrop_path}`
-                                : "/default-backdrop.png"
-                            }
-                            alt={title.title}
-                            onClick={() => handleClick(title.id)}
-                            className="w-full h-full object-cover cursor-pointer"
-                          />
+                          <a
+                            href={`/title/${title.id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => handleClick(title.id)}>
+                            <img
+                              src={
+                                title.backdrop_path
+                                  ? `https://image.tmdb.org/t/p/w500${title.backdrop_path}`
+                                  : "/default-backdrop.png"
+                              }
+                              alt={title.title}
+                              onClick={() => handleClick(title.id)}
+                              className="w-full h-full object-cover cursor-pointer"
+                            />
+                          </a>
                         </div>
                         <div className="px-1">
-                          <a onClick={() => handleClick(title.id)}>
+                          <a
+                            href={`/title/${title.id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => handleClick(title.id)}>
                             <p className="text-xs sm:text-sm font-medium cursor-pointer hover:text-primary line-clamp-1">
                               {title.title}
                             </p>
