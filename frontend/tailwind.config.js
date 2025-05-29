@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+import defaultTheme from "tailwindcss/defaultTheme";
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -8,6 +10,7 @@ export default {
         lato: ["Lato", "sans-serif"],
         montserrat: ["Montserrat", "sans-serif"],
         playfair: ["Playfair Display", "serif"],
+        inter: ["Inter", ...defaultTheme.fontFamily.sans],
       },
     },
   },

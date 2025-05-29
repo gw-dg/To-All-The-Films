@@ -14,7 +14,7 @@ export default function Layout({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isTransparentNavbar = location.pathname.startsWith("/title/");
+  const isTransparentNavbar = location.pathname === "/";
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const handleNavigation = (path) => {
     navigate(path);
@@ -59,11 +59,11 @@ export default function Layout({ children }) {
           {/* Page content here */}
           <div
             className={`navbar bg-base-100 
-            //     
-            //   isTransparentNavbar
-            //     ? "absolute top-0 left-0 right-0 bg-transparent z-10 text-white"
-            //     : ""
-            // } z-[30]
+              ${
+                isTransparentNavbar
+                  ? "absolute top-0 left-0 right-0 bg-transparent z-10 text-white"
+                  : ""
+              } z-[30]
             `}>
             <div className="flex-none">
               <label
@@ -85,7 +85,7 @@ export default function Layout({ children }) {
             </div>
             <div className="flex-1 justify-center items-center">
               <a
-                className="text-3xl sm:text-4xl md:text-5xl font-italianno tracking-wider pt-2 hover:cursor-pointer truncate"
+                className="text-3xl sm:text-4xl lg:text-5xl font-italianno tracking-wider pt-2 hover:cursor-pointer truncate"
                 onClick={() => handleNavigation("/home")}>
                 To All The Films
               </a>
@@ -95,7 +95,7 @@ export default function Layout({ children }) {
 
           {/* <GenreCard /> */}
         </div>
-        <div className="drawer-side">
+        <div className="drawer-side z-[60]">
           <label
             htmlFor="my-drawer"
             aria-label="close sidebar"

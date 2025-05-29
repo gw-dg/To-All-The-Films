@@ -20,6 +20,7 @@ import Body from "./UI/Body";
 import SearchPage from "./UI/SearchPage";
 import LoadingPage from "./utils/Loading";
 import GenAI from "./UI/GenAi";
+import LandingPage from "./UI/LandingPage";
 
 export const ListContext = createContext();
 export const AuthContext = createContext();
@@ -40,6 +41,8 @@ function App() {
   const [currPage, setCurrPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const location = useLocation();
+
+  const isLandingPage = location.pathname === "/";
 
   useEffect(() => {
     const validateSession = async () => {
@@ -130,6 +133,7 @@ function App() {
           ) : (
             <Layout>
               <Routes>
+                <Route path="/" element={<LandingPage />} />
                 <Route
                   path="/login"
                   element={

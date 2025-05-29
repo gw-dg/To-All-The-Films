@@ -39,7 +39,8 @@ const MovieDetail = () => {
 
   const navigate = useNavigate();
 
-  const handleClick = (id) => {
+  const handleClick = (e, id) => {
+    e.preventDefualt();
     navigate(`/title/${id}`);
   };
 
@@ -363,7 +364,7 @@ const MovieDetail = () => {
                             href={`/title/${title.id}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            onClick={() => handleClick(title.id)}>
+                            onClick={(e) => handleClick(e, title.id)}>
                             <img
                               src={
                                 title.backdrop_path
@@ -371,7 +372,7 @@ const MovieDetail = () => {
                                   : "/default-backdrop.png"
                               }
                               alt={title.title}
-                              onClick={() => handleClick(title.id)}
+                              onClick={(e) => handleClick(e, title.id)}
                               className="w-full h-full object-cover cursor-pointer"
                             />
                           </a>
@@ -381,7 +382,7 @@ const MovieDetail = () => {
                             href={`/title/${title.id}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            onClick={() => handleClick(title.id)}>
+                            onClick={(e) => handleClick(e, title.id)}>
                             <p className="text-xs sm:text-sm font-medium cursor-pointer hover:text-primary line-clamp-1">
                               {title.title}
                             </p>

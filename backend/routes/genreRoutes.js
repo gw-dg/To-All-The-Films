@@ -59,7 +59,7 @@ router.get("/discover/movie", async (req, res) => {
       }
     );
     res.status(200).json(response.data);
-  } catch (error) {
+  } catch (err) {
     console.error("Error fetching movies:", err.message);
     res.status(500).json({ error: "Error occured during fetching data" });
   }
