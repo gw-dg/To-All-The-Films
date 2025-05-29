@@ -66,26 +66,40 @@ const LandingPage = () => {
     <div className="min-h-screen bg-black text-white overflow-hidden">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-end justify-center pb-24">
-        {/* Background Movie Image with Blur Fade */}
-        <div className="absolute inset-0 flex items-start justify-center">
-          <div className="relative w-5/6 h-[90vh]">
+        {/* Background Movie Image with Responsive Design */}
+        <div className="absolute inset-0">
+          {/* Desktop and Tablet Background */}
+          <div className="hidden sm:flex items-start justify-center h-full">
+            <div className="relative w-5/6 h-[90vh]">
+              <div
+                className="w-full h-full bg-cover bg-center bg-no-repeat"
+                style={{
+                  backgroundImage: `url('https://image.tmdb.org/t/p/original/braxt8dewdpV8zcGHpXUSj0ja2N.jpg')`,
+                }}></div>
+
+              {/* Gradient overlays for desktop */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/20"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black via-black/90 to-transparent"></div>
+              <div className="absolute top-0 bottom-0 left-0 w-40 bg-gradient-to-r from-black via-black/90 to-transparent"></div>
+              <div className="absolute top-0 bottom-0 right-0 w-40 bg-gradient-to-l from-black via-black/90 to-transparent"></div>
+            </div>
+          </div>
+
+          {/* Mobile Background - Full Width with Better Gradients */}
+
+          <div className="sm:hidden absolute inset-0">
             <div
               className="w-full h-full bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage: `url('https://image.tmdb.org/t/p/original/iwXM4CB17fYVczUHOT4DxXPLiEg.jpg')`,
+                backgroundImage: `url('https://image.tmdb.org/t/p/original/yRBc6WY3r1Fz5Cjd6DhSvzqunED.jpg')`,
               }}></div>
 
-            {/* Top fade */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/20"></div>
-
-            {/* Bottom fade */}
-            <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black via-black/90 to-transparent"></div>
-
-            {/* Left fade */}
-            <div className="absolute top-0 bottom-0 left-0 w-40 bg-gradient-to-r from-black via-black/90 to-transparent"></div>
-
-            {/* Right fade */}
-            <div className="absolute top-0 bottom-0 right-0 w-40 bg-gradient-to-l from-black via-black/90 to-transparent"></div>
+            {/* Mobile-optimized gradient overlays */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/85 to-black/30"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black via-black/95 to-transparent"></div>
+            <div className="absolute top-0 bottom-0 left-0 w-8 bg-gradient-to-r from-black via-black/80 to-transparent"></div>
+            <div className="absolute top-0 bottom-0 right-0 w-8 bg-gradient-to-l from-black via-black/80 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-transparent"></div>
           </div>
         </div>
 
@@ -141,7 +155,7 @@ const LandingPage = () => {
               </div>
 
               {/* Skeleton for movie carousel */}
-              <div className="flex gap-4 overflow-hidden w-full max-w-6xl">
+              <div className="flex gap-4 overflow-hidden w-full max-w-6xl justify-center items-center">
                 {[...Array(5)].map((_, i) => (
                   <div key={i} className="flex-shrink-0">
                     <Skeleton height={300} width={200} className="rounded-lg" />
@@ -154,7 +168,7 @@ const LandingPage = () => {
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center">
-            <span className="text-lg md:text-xl pb-5 font-inter text-gray-300 max-w-2xl mx-auto leading-relaxed">
+            <span className="text-base md:text-xl pb-5 font-inter text-gray-300 max-w-2xl mx-auto leading-relaxed">
               Discover Trending Movies, TV Shows and more...
             </span>
             <LatestMoviesCarousel trendingMovieList={trendingMovieList} />
