@@ -84,6 +84,7 @@ const limiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: "Too many requests. Please slow down.",
+  trustProxy: true,
 });
 
 const speedLimiter = slowDown({
@@ -91,6 +92,7 @@ const speedLimiter = slowDown({
   delayAfter: 5,
   delayMs: (used, req) => (used - req.slowDown.limit) * 500,
   validate: { delayMs: false },
+  trustProxy: true,
 });
 
 router.post("/chat", limiter, speedLimiter, async (req, res) => {
