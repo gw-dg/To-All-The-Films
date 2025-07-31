@@ -24,7 +24,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
+app.set("trust proxy", 1);
 const PORT = process.env.PORT;
 
 app.get("/", (request, response) => {
