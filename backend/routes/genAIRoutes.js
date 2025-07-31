@@ -90,6 +90,7 @@ const speedLimiter = slowDown({
   windowMs: 60 * 1000,
   delayAfter: 5,
   delayMs: (used, req) => (used - req.slowDown.limit) * 500,
+  validate: { delayMs: false },
 });
 
 router.post("/chat", limiter, speedLimiter, async (req, res) => {
