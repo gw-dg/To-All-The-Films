@@ -21,6 +21,7 @@ import SearchPage from "./UI/SearchPage";
 import LoadingPage from "./utils/Loading";
 import GenAI from "./UI/GenAi";
 import LandingPage from "./UI/LandingPage";
+import { Analytics } from "@vercel/analytics/next";
 
 export const ListContext = createContext();
 export const AuthContext = createContext();
